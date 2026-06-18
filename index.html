@@ -1,0 +1,1795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MTN ASAP Competition - Professional Assessment Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        /* Main Screen */
+        #mainScreen {
+            padding: 30px;
+        }
+
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .welcome-section h2 {
+            color: #222;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .welcome-section p {
+            color: #666;
+            font-size: 1.05em;
+            margin-bottom: 10px;
+        }
+
+        .test-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .test-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .test-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.25);
+            transform: translateY(-5px);
+        }
+
+        .test-card h3 {
+            color: #667eea;
+            font-size: 1.4em;
+            margin-bottom: 10px;
+        }
+
+        .test-card p {
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .test-card .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #ddd;
+        }
+
+        .test-card .stat {
+            text-align: center;
+        }
+
+        .test-card .stat-value {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .test-card .stat-label {
+            font-size: 0.85em;
+            color: #999;
+        }
+
+        .test-card button {
+            width: 100%;
+            margin-top: 15px;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .test-card button:hover {
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Test Screen */
+        #testScreen {
+            display: none;
+            padding: 0;
+        }
+
+        .test-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .test-title {
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .timer-box {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .timer-box.warning {
+            background: rgba(255, 193, 7, 0.5);
+        }
+
+        .timer-box.critical {
+            background: rgba(244, 67, 54, 0.5);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e9ecef;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+
+        .test-content {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            min-height: 600px;
+        }
+
+        .question-container {
+            flex: 1;
+        }
+
+        .question-number-display {
+            color: #999;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .question-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .answer-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .answer-option {
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: white;
+        }
+
+        .answer-option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .answer-option input[type="radio"] {
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+        }
+
+        .answer-option.selected {
+            border-color: #667eea;
+            background: #e7f0ff;
+            font-weight: 600;
+        }
+
+        .answer-option.answered {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+
+        .answer-option.answered.incorrect {
+            border-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        .answer-label {
+            font-weight: 700;
+            color: #667eea;
+            min-width: 30px;
+        }
+
+        .answer-text {
+            flex: 1;
+            color: #333;
+        }
+
+        .test-navigation {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .nav-button {
+            padding: 12px 25px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: #667eea;
+            border-color: #667eea;
+        }
+
+        .nav-button:hover:not(:disabled) {
+            background: #667eea;
+            color: white;
+        }
+
+        .nav-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .nav-button.submit {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+        }
+
+        .nav-button.submit:hover {
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+        }
+
+        .question-palette {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .question-pill {
+            width: 34px;
+            height: 34px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            background: #f8f9fa;
+            color: #333;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .question-pill:hover {
+            transform: translateY(-1px);
+            border-color: #667eea;
+            background: #eef2ff;
+        }
+
+        .question-pill.current {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .question-pill.answered {
+            border-color: #28a745;
+            background: #28a745;
+            color: white;
+        }
+
+        .question-pill.unanswered {
+            border-color: #ffc107;
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .question-stats {
+            display: flex;
+            gap: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .stat-number {
+            font-weight: 700;
+            color: #667eea;
+            font-size: 1.2em;
+        }
+
+        /* Results Screen */
+        #resultsScreen {
+            display: none;
+            padding: 30px;
+        }
+
+        .results-container {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .score-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 30px auto;
+            color: white;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .score-percent {
+            font-size: 3em;
+            font-weight: 700;
+        }
+
+        .score-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .results-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .result-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .result-card.correct {
+            border-left-color: #28a745;
+        }
+
+        .result-card.incorrect {
+            border-left-color: #dc3545;
+        }
+
+        .result-card.unanswered {
+            border-left-color: #ffc107;
+        }
+
+        .result-value {
+            font-size: 2em;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .result-card.correct .result-value {
+            color: #28a745;
+        }
+
+        .result-card.incorrect .result-value {
+            color: #dc3545;
+        }
+
+        .result-card.unanswered .result-value {
+            color: #ffc107;
+        }
+
+        .result-label {
+            color: #666;
+            font-weight: 600;
+        }
+
+        .performance-message {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin: 20px 0;
+            color: #667eea;
+        }
+
+        .performance-message.excellent {
+            color: #28a745;
+        }
+
+        .performance-message.good {
+            color: #ffc107;
+        }
+
+        .performance-message.needs-improvement {
+            color: #dc3545;
+        }
+
+        .results-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .results-actions button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .results-actions .retry-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .results-actions .retry-btn:hover {
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .results-actions .home-btn {
+            background: #f8f9fa;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .results-actions .home-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .test-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .results-details {
+                grid-template-columns: 1fr;
+            }
+
+            .score-circle {
+                width: 150px;
+                height: 150px;
+            }
+
+            .score-percent {
+                font-size: 2em;
+            }
+
+            .test-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Yellow theme overrides */
+        .header { background: linear-gradient(135deg, #FFD54A 0%, #FFC107 100%) !important; color: #2b2b2b !important; }
+        .test-card { background: linear-gradient(135deg, #fff9e6 0%, #fff3cf 100%) !important; border-color: #f0e1a0 !important; }
+        .test-card:hover { border-color: #FFB300 !important; box-shadow: 0 8px 25px rgba(255,183,77,0.25) !important; }
+        .test-card h3 { color: #FFB300 !important; }
+        .test-card button { background: linear-gradient(135deg, #FFD54A 0%, #FFC107 100%) !important; color: #2b2b2b !important; }
+        .test-card button:hover { box-shadow: 0 5px 15px rgba(255,183,77,0.25) !important; }
+        .stat-value { color: #FFB300 !important; }
+        .score-circle { background: linear-gradient(135deg, #FFD54A 0%, #FFC107 100%) !important; color: #2b2b2b !important; box-shadow: 0 10px 30px rgba(255,183,77,0.3) !important; }
+        .result-card { border-left-color: #FFB300 !important; }
+        .result-value { color: #FFB300 !important; }
+        .performance-message { color: #FFB300 !important; }
+        .results-actions .retry-btn { background: linear-gradient(135deg, #FFD54A 0%, #FFC107 100%) !important; color: #2b2b2b !important; }
+        .results-actions .home-btn { background: #fff9e6 !important; color: #FFB300 !important; border-color: #FFB300 !important; }
+        .progress-fill { background: linear-gradient(90deg, #FFD54A, #FFC107) !important; }
+        .timer-box.warning { background: #FFD54A !important; color: #2b2b2b !important; }
+        .timer-box.critical { background: #ff6b6b !important; color: white !important; }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏆 MTN ASAP Competition</h1>
+            <p>Drug Knowledge & Demand Reduction - Professional Assessment Platform</p>
+        </div>
+
+        <!-- Main Screen -->
+        <div id="mainScreen">
+            <div class="welcome-section">
+                <h2>Welcome to the MTN ASAP Assessment Platform</h2>
+                <p>Prepare for the competition with our comprehensive question bank</p>
+                <p>Each test contains 100 randomly shuffled questions</p>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #fff9e6 0%, #fff3cf 100%); padding: 22px; border-radius: 14px; border: 2px solid #FFB300; margin-bottom: 30px;">
+                <label for="studentNameMain" style="display: block; font-weight: 700; margin-bottom: 10px; color: #2b2b2b;">📝 Student Name</label>
+                <input id="studentNameMain" type="text" placeholder="Enter full name before starting" style="width: 100%; padding: 14px; border: 2px solid #FFB300; border-radius: 10px; font-size: 1rem; color: #2b2b2b; background: white;" />
+                <div id="nameError" style="display: none; color: #dc3545; margin-top: 10px; font-weight: 600;"></div>
+            </div>
+
+            <div class="test-options">
+                <div class="test-card">
+                    <h3>🧪 Start Full Test</h3>
+                    <p>One 100-question test — freshly shuffled every time</p>
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">100</div>
+                            <div class="stat-label">Questions</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">30</div>
+                            <div class="stat-label">Min</div>
+                        </div>
+                    </div>
+                    <button onclick="startTest(100)">Start Test</button>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button onclick="showTestHistory()" style="padding: 12px 30px; background: #FFC107; color: #2b2b2b; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1em;">📊 View Test History</button>
+            </div>
+        </div>
+
+        <!-- Test History Screen -->
+        <div id="historyScreen" style="display: none; padding: 30px;">
+            <div style="max-width: 900px; margin: 0 auto;">
+                <h2 style="margin-bottom: 20px; color: #2b2b2b;">📋 Test Results History</h2>
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
+                    <button onclick="clearHistory()" style="padding: 12px 30px; background: #dc3545; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">🧹 Clear History</button>
+                    <button onclick="backToHome()" style="padding: 12px 30px; background: #FFC107; color: #2b2b2b; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">← Back to Home</button>
+                </div>
+                <div id="historyContent" style="background: white; border-radius: 10px; padding: 20px;"></div>
+            </div>
+        </div>
+
+        <!-- Test Screen -->
+        <div id="testScreen">
+            <div class="test-header">
+                <div class="test-title" id="testTitle">Question 1 of 100</div>
+                <div class="timer-box" id="timerBox">30:00</div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="test-content">
+                <div class="question-stats">
+                    <div class="stat">
+                        <span class="stat-label">Question:</span>
+                        <span class="stat-number" id="questionNumber">1</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Answered:</span>
+                        <span class="stat-number" id="answeredCount">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Remaining:</span>
+                        <span class="stat-number" id="remainingCount">100</span>
+                    </div>
+                </div>
+
+                <div class="question-container">
+                    <div class="question-number-display" id="questionNumberDisplay">Question 1 of 100</div>
+                    <div class="question-title" id="questionTitle"></div>
+                    <div class="answer-options" id="answerOptions"></div>
+                </div>
+
+                <div class="test-navigation">
+                    <button class="nav-button" id="prevBtn" onclick="previousQuestion()" disabled>← Previous</button>
+                    <button class="nav-button" id="nextBtn" onclick="nextQuestion()">Next →</button>
+                    <button class="nav-button submit" onclick="submitTest()">Submit Test</button>
+                </div>
+                <div class="question-palette" id="questionPalette"></div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="resultsScreen">
+            <div class="results-container">
+                <h2 style="font-size: 1.8em; margin-bottom: 20px;">Test Complete!</h2>
+                
+                <div class="score-circle" id="scoreCircle">
+                    <div class="score-percent" id="scorePercent">0%</div>
+                    <div class="score-label">Your Score</div>
+                </div>
+
+                <div class="performance-message" id="performanceMessage">Great effort!</div>
+
+                <div class="results-details">
+                    <div class="result-card correct">
+                        <div class="result-value" id="correctCount">0</div>
+                        <div class="result-label">Correct</div>
+                    </div>
+                    <div class="result-card incorrect">
+                        <div class="result-value" id="incorrectCount">0</div>
+                        <div class="result-label">Incorrect</div>
+                    </div>
+                    <div class="result-card unanswered">
+                        <div class="result-value" id="unansweredCount">0</div>
+                        <div class="result-label">Unanswered</div>
+                    </div>
+                </div>
+
+                <p style="color: #666; font-size: 1.05em; margin: 20px 0;">
+                    You answered <strong id="resultSummary">0 out of 0</strong> questions correctly.
+                </p>
+
+                <div id="emailStatus" style="display: none; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; font-weight: 600;"></div>
+
+                <div class="results-actions">
+                    <button class="retry-btn" onclick="backToHome()">← Back to Home</button>
+                    <button class="home-btn" onclick="showReviewAnswers()">Review Answers</button>
+                    <button class="home-btn" onclick="startTest(100)">Try Another Test</button>
+                </div>
+                <div id="reviewSection" style="display:none; margin-top: 25px; padding: 20px; border-radius: 12px; background: #f8f9fa; border: 1px solid #e2e3e5; max-height: 450px; overflow-y: auto;">
+                    <h3 style="margin-bottom: 15px; color: #333;">Answer Review</h3>
+                    <div id="reviewContent" style="font-size: 0.95em; line-height: 1.5;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // IndexedDB Setup for storing test results
+        let db = null;
+        let dbReady = false;
+        const DB_NAME = 'MTNAsapDB';
+        const DB_VERSION = 1;
+        const STORE_NAME = 'testResults';
+        const LOCALSTORAGE_KEY = 'MTN_ASAP_TEST_RESULTS';
+        const HISTORY_PASSWORD = 'josephjoseph12';
+        const TEST_DURATION_SECONDS = 1800; // 30 minutes
+
+        // ===== SHARED GOOGLE SHEET DATABASE (combines results from every phone/device) =====
+        // 1. Create a Google Sheet, open Extensions > Apps Script, paste the provided Code.gs
+        // 2. Deploy it as a Web App ("Anyone" access) and paste the resulting URL below
+        // 3. Make sure SHEET_API_KEY here matches SECRET_KEY in the Apps Script exactly
+        const SHEET_API_URL = 'https://script.google.com/macros/s/AKfycbyLm_VbF8InqJF0-JXrD3KheE5yM_8uylJ057X4BfY7P3jxsqYm9Cm5TcxAMCNm_iuZZA/exec';
+        const SHEET_API_KEY = 'mtn-asap-2026-change-me';
+        const PASS_MARK = 50; // % score needed to be marked "Pass"
+
+        function initDB() {
+            return new Promise((resolve, reject) => {
+                if (dbReady && db) {
+                    resolve(db);
+                    return;
+                }
+
+                try {
+                    const request = indexedDB.open(DB_NAME, DB_VERSION);
+                    
+                    request.onerror = () => {
+                        console.error('IndexedDB error:', request.error);
+                        reject('IndexedDB initialization failed');
+                    };
+                    
+                    request.onsuccess = () => {
+                        db = request.result;
+                        dbReady = true;
+                        console.log('✅ IndexedDB initialized successfully');
+                        resolve(db);
+                    };
+                    
+                    request.onupgradeneeded = (e) => {
+                        console.log('Creating IndexedDB schema...');
+                        const database = e.target.result;
+                        if (!database.objectStoreNames.contains(STORE_NAME)) {
+                            const store = database.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
+                            store.createIndex('studentName', 'studentName', { unique: false });
+                            store.createIndex('timestamp', 'timestamp', { unique: false });
+                            console.log('✅ Object store created');
+                        }
+                    };
+                } catch (err) {
+                    console.error('IndexedDB init error:', err);
+                    reject(err);
+                }
+            });
+        }
+
+        function saveResultToDB(studentName, percentage, correct, incorrect, unanswered, total) {
+            console.log('🔍 saveResultToDB called with:', { studentName, percentage, correct, incorrect, unanswered, total });
+            
+            const resultData = {
+                studentName: studentName,
+                score: percentage,
+                correct: parseInt(correct),
+                incorrect: parseInt(incorrect),
+                unanswered: parseInt(unanswered),
+                total: total,
+                timestamp: new Date().toLocaleString(),
+                date: new Date().getTime()
+            };
+
+            // Send to the shared Google Sheet so every phone's result lands in ONE place
+            saveResultToSheet(resultData);
+
+            // ALSO save to LocalStorage as an offline-friendly local backup
+            try {
+                let results = JSON.parse(localStorage.getItem(LOCALSTORAGE_KEY) || '[]');
+                console.log('📦 Current LocalStorage results:', results.length);
+                results.push(resultData);
+                localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(results));
+                console.log('✅ SUCCESSFULLY saved to LocalStorage. Total records:', results.length);
+            } catch (err) {
+                console.error('❌ LocalStorage save error:', err);
+            }
+
+            // ALSO try IndexedDB if ready
+            if (db && dbReady) {
+                try {
+                    const transaction = db.transaction([STORE_NAME], 'readwrite');
+                    const store = transaction.objectStore(STORE_NAME);
+                    const request = store.add(resultData);
+                    
+                    request.onerror = () => {
+                        console.error('❌ IndexedDB add error:', request.error);
+                    };
+                    
+                    request.onsuccess = () => {
+                        console.log('✅ Also saved to IndexedDB');
+                    };
+                } catch (err) {
+                    console.error('❌ IndexedDB transaction error:', err);
+                }
+            } else {
+                console.warn('⚠️ IndexedDB not ready (will use LocalStorage only)');
+            }
+
+            // Return success immediately since we saved to LocalStorage
+            return Promise.resolve(resultData);
+        }
+
+        function saveResultToSheet(resultData) {
+            if (!SHEET_API_URL || SHEET_API_URL.includes('PASTE_YOUR')) {
+                console.warn('⚠️ Google Sheet not configured yet — set SHEET_API_URL to enable shared storage across devices.');
+                return;
+            }
+
+            const payload = {
+                key: SHEET_API_KEY,
+                studentName: resultData.studentName,
+                score: resultData.score,
+                correct: resultData.correct,
+                incorrect: resultData.incorrect,
+                unanswered: resultData.unanswered,
+                total: resultData.total,
+                passed: resultData.score >= PASS_MARK,
+                device: navigator.userAgent
+            };
+
+            fetch(SHEET_API_URL, {
+                method: 'POST',
+                body: JSON.stringify(payload)
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('✅ Synced to shared Google Sheet (visible from any device)');
+                    } else {
+                        console.error('❌ Google Sheet rejected the record:', data.error);
+                    }
+                })
+                .catch(err => {
+                    console.error('❌ Could not reach Google Sheet (device may be offline):', err);
+                });
+        }
+
+        function fetchAllResultsFromSheet() {
+            if (!SHEET_API_URL || SHEET_API_URL.includes('PASTE_YOUR')) {
+                return Promise.reject('Google Sheet not configured yet');
+            }
+            return fetch(`${SHEET_API_URL}?key=${encodeURIComponent(SHEET_API_KEY)}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.success) throw new Error(data.error || 'Unknown error from Google Sheet');
+                    return data.results.map(r => ({
+                        studentName: r['Student Name'],
+                        score: r['Score (%)'],
+                        correct: r['Correct'],
+                        incorrect: r['Incorrect'],
+                        unanswered: r['Unanswered'],
+                        result: r['Result'],
+                        timestamp: r['Timestamp'] ? new Date(r['Timestamp']).toLocaleString() : '',
+                        date: r['Timestamp'] ? new Date(r['Timestamp']).getTime() : 0
+                    })).sort((a, b) => b.date - a.date);
+                });
+        }
+
+        function getAllResults() {
+            console.log('🔍 getAllResults called');
+            
+            return new Promise((resolve, reject) => {
+                // Try LocalStorage FIRST (most reliable)
+                try {
+                    const results = JSON.parse(localStorage.getItem(LOCALSTORAGE_KEY) || '[]');
+                    console.log('✅ Retrieved', results.length, 'results from LocalStorage');
+                    
+                    if (results.length > 0) {
+                        const sorted = results.sort((a, b) => b.date - a.date);
+                        console.log('📋 Sorted results:', sorted);
+                        resolve(sorted);
+                        return;
+                    }
+                } catch (err) {
+                    console.error('❌ LocalStorage read error:', err);
+                }
+
+                // If LocalStorage is empty, try IndexedDB
+                if (db && dbReady) {
+                    try {
+                        const transaction = db.transaction([STORE_NAME], 'readonly');
+                        const store = transaction.objectStore(STORE_NAME);
+                        const request = store.getAll();
+                        
+                        request.onerror = () => {
+                            console.error('❌ IndexedDB read error:', request.error);
+                            resolve([]);
+                        };
+                        
+                        request.onsuccess = () => {
+                            const results = request.result.sort((a, b) => b.date - a.date);
+                            console.log('✅ Retrieved', results.length, 'results from IndexedDB');
+                            resolve(results);
+                        };
+                    } catch (err) {
+                        console.error('❌ IndexedDB transaction error:', err);
+                        resolve([]);
+                    }
+                } else {
+                    console.log('IndexedDB not ready, returning empty (LocalStorage was also empty)');
+                    resolve([]);
+                }
+            });
+        }
+
+        // Initialize DB on page load - wait a bit to ensure it's ready
+        initDB().then(() => {
+            console.log('Database ready');
+        }).catch(err => {
+            console.log('Database init warning:', err, '(will use LocalStorage fallback)');
+        });
+
+        // Complete question database
+        const allQuestions = [
+            {id: 1, question: "All are the desired outcome of Drug Demand Reduction Pillar of the NDCMP except……", options: {A: "Reduced Use of Drugs (Prevention and Sensitization)", B: "Reduced cannabis cultivation", C: "Reduced harm caused by drug use", D: "Improved services"}, answer: "B"},
+{id: 2, question: "Which of the following best defines a drug?", options: {A: "Any substance that alters normal body or mind function", B: "Only illegal substances", C: "Only medicines prescribed by doctors", D: "A chemical that causes sleep"}, answer: "A"},
+{id: 3, question: "Which organ system is primarily affected by psychoactive drugs?", options: {A: "Respiratory System", B: "Central Nervous System", C: "Digestive System", D: "Endocrine System"}, answer: "B"},
+{id: 4, question: "Which of the following is an example of an illicit drug?", options: {A: "Caffeine", B: "Nicotine", C: "Cocaine", D: "Aspirin"}, answer: "C"},
+{id: 5, question: "Which of these is a licit drug?", options: {A: "Heroin", B: "Tobacco", C: "Cocaine", D: "Methamphetamine"}, answer: "B"},
+{id: 6, question: "Drug misuse involves:", options: {A: "Using drugs as prescribed", B: "Using drugs incorrectly or without prescription", C: "Avoiding all drugs", D: "Sharing drugs legally"}, answer: "B"},
+{id: 7, question: "Drug abuse refers to:", options: {A: "Taking medicine under medical supervision", B: "Using drugs for approved medical use", C: "Excessive or inappropriate drug use", D: "Avoiding all forms of medication"}, answer: "C"},
+{id: 8, question: "Which of these is NOT an example of a psychoactive drug?", options: {A: "Alcohol", B: "Tobacco", C: "Insulin", D: "Caffeine"}, answer: "C"},
+{id: 9, question: "Which drug classification slows down the Central Nervous System?", options: {A: "Stimulants", B: "Depressants", C: "Hallucinogens", D: "Analgesics"}, answer: "B"},
+{id: 10, question: "Which drug classification increases alertness and energy?", options: {A: "Depressants", B: "Hallucinogens", C: "Stimulants", D: "Opioids"}, answer: "C"},
+{id: 11, question: "Which of the following is a common form of cocaine use?", options: {A: "Sniffing", B: "Drinking", C: "Chewing", D: "Injecting only"}, answer: "A"},
+{id: 12, question: "Which drug is linked with hallucinations?", options: {A: "LSD", B: "Nicotine", C: "Caffeine", D: "Alcohol"}, answer: "A"},
+{id: 13, question: "Which of the following is an unconventional substance?", options: {A: "Rubber solution (solisho)", B: "Aspirin", C: "Antibiotics", D: "Valium"}, answer: "A"},
+{id: 14, question: "Which class of drugs causes sedation and relaxation?", options: {A: "Stimulants", B: "Depressants", C: "Hallucinogens", D: "Steroids"}, answer: "B"},
+{id: 15, question: "Which term describes intense desire to use a drug?", options: {A: "Dependence", B: "Tolerance", C: "Craving", D: "Withdrawal"}, answer: "C"},
+{id: 16, question: "Which of the following statements about drug dependence is true?", options: {A: "It can be both physical and psychological", B: "It is only psychological", C: "It is not related to brain function", D: "It has no health risks"}, answer: "A"},
+{id: 17, question: "Which of the following best describes 'drug withdrawal symptoms'?", options: {A: "Feeling happy after taking drugs", B: "Effects after stopping drug use", C: "Symptoms of overdose", D: "Body adapting to new drugs"}, answer: "B"},
+{id: 18, question: "Methamphetamine is also known as:", options: {A: "Downer", B: "Ice", C: "Candy", D: "Rock"}, answer: "B"},
+{id: 19, question: "Which of the following is a barbiturate?", options: {A: "Phenobarbital", B: "Cocaine", C: "Caffeine", D: "Nicotine"}, answer: "A"},
+{id: 20, question: "Which term describes taking drugs without medical advice?", options: {A: "Self-medication", B: "Dependence", C: "Tolerance", D: "Addiction"}, answer: "A"},
+{id: 21, question: "Which of the following is NOT a correct pairing of drug and effect?", options: {A: "Cocaine – euphoria", B: "Alcohol – stimulation", C: "LSD – hallucination", D: "Barbiturates – sedation"}, answer: "B"},
+{id: 22, question: "Which of the following can cause serotonin syndrome?", options: {A: "MDMA", B: "Nicotine", C: "Alcohol", D: "Caffeine"}, answer: "A"},
+{id: 23, question: "Which best describes drug tolerance?", options: {A: "Need for more drug to achieve same effect", B: "Refusal to use drugs", C: "Body rejection of drugs", D: "Desire for less dosage"}, answer: "A"},
+{id: 24, question: "Which route bypasses the digestive system?", options: {A: "Oral", B: "Rectal", C: "Sublingual", D: "Transdermal"}, answer: "C"},
+{id: 25, question: "Which of the following is a feature of stimulant overdose?", options: {A: "Slowed heart rate", B: "Depressed mood", C: "Elevated blood pressure", D: "Sleepiness"}, answer: "C"},
+{id: 26, question: "What is a potential risk of injecting drugs?", options: {A: "Skin rash", B: "Hepatitis transmission", C: "Sore throat", D: "Dehydration"}, answer: "B"},
+{id: 27, question: "Which of these is most associated with aggressive behavior and paranoia?", options: {A: "Methamphetamine", B: "Alcohol", C: "Nicotine", D: "Valium"}, answer: "A"},
+{id: 28, question: "Which of these depressants is commonly used as anesthesia?", options: {A: "Barbiturates", B: "Caffeine", C: "Amphetamine", D: "Cocaine"}, answer: "A"},
+{id: 29, question: "Which of these routes is used when oral administration is not possible?", options: {A: "Transdermal", B: "Rectal", C: "Inhalation", D: "Sublingual"}, answer: "B"},
+{id: 30, question: "Drugs are substances that, when taken into the body, alter normal functioning by acting primarily on which system?", options: {A: "The circulatory system", B: "The respiratory system", C: "The digestive system", D: "The central nervous system (brain and spinal cord)"}, answer: "D"},
+{id: 31, question: "Which term refers to the inappropriate use of drugs in a manner that deviates from approved medical or social use?", options: {A: "Drug regulation", B: "Drug prescription", C: "Drug abuse", D: "Drug therapy"}, answer: "C"},
+{id: 32, question: "Self-medication, using expired medications, or not following prescribed dosage instructions best describes:", options: {A: "Drug dependence", B: "Drug tolerance", C: "Drug withdrawal", D: "Drug misuse"}, answer: "D"},
+{id: 33, question: "Psychoactive drugs are best described as drugs that:", options: {A: "Are always safe when used recreationally", B: "Have no effect on mood or behaviour", C: "Can only be obtained illegally", D: "Exert major action on the central nervous system and have habit-forming properties"}, answer: "D"},
+{id: 34, question: "Prescription/controlled medications are those that:", options: {A: "Are sold only in supermarkets", B: "Can only be dispensed on the written instruction of authorised health personnel", C: "Can be bought freely without restriction", D: "Are completely illegal in Nigeria"}, answer: "B"},
+{id: 35, question: "Over-the-counter (OTC) medications are best described as medications that:", options: {A: "Require a prescription before purchase", B: "Are deemed safe and effective for use without a prescription", C: "Are banned by international drug treaties", D: "Are only used in hospitals"}, answer: "B"},
+{id: 36, question: "Which of the following is an example of a LICIT drug?", options: {A: "Alcohol", B: "Cocaine", C: "Methamphetamine", D: "Heroin"}, answer: "A"},
+{id: 37, question: "Which of the following is an example of an ILLICIT drug?", options: {A: "A prescribed antibiotic", B: "Alcohol", C: "Heroin", D: "Tobacco"}, answer: "C"},
+{id: 38, question: "Zakami, paw-paw leaf and rubber solution (solisho) are examples of:", options: {A: "Prescription medications", B: "Unconventional substances", C: "Over-the-counter medications", D: "Therapeutic drugs"}, answer: "B"},
+{id: 39, question: "Drug dependence/addiction is best described as:", options: {A: "Repeated use of a psychoactive substance with a compulsion to take it and great difficulty stopping", B: "Taking medicine exactly as prescribed", C: "Refusing to use any drugs at all", D: "Using a drug once out of curiosity"}, answer: "A"},
+{id: 40, question: "Drug dependence can be both physical and:", options: {A: "Imaginary", B: "Psychological", C: "Financial only", D: "Temporary and harmless"}, answer: "B"},
+{id: 41, question: "An intense desire or urge to use a drug, even when one knows it is harmful, is called:", options: {A: "Detoxification", B: "Craving", C: "Prescription", D: "Tolerance"}, answer: "B"},
+{id: 42, question: "Nausea, headaches, anxiety and even seizures that occur when a person stops using a drug their body had become dependent on are called:", options: {A: "Placebo effects", B: "Allergic reactions", C: "Side benefits", D: "Withdrawal symptoms"}, answer: "D"},
+{id: 43, question: "Which statement about drug abuse is TRUE?", options: {A: "Prescription medications, alcohol and even OTC drugs can also be abused", B: "Only illegal drugs like cannabis or heroin can be abused", C: "Drug abuse never has economic consequences", D: "Drug abuse cannot lead to addiction"}, answer: "A"},
+{id: 44, question: "A known effect of cocaine on the body is:", options: {A: "Reduced risk of cardiovascular problems", B: "Slowed heart rate and low blood pressure", C: "Increased heart rate and blood pressure", D: "Improved kidney function"}, answer: "C"},
+{id: 45, question: "Heroin depresses the central nervous system, leading to:", options: {A: "Improved memory", B: "Increased alertness and energy", C: "Stronger immunity", D: "Respiratory depression and overdose"}, answer: "D"},
+{id: 46, question: "Methamphetamine use can cause:", options: {A: "Hallucinations, paranoia and violent behaviour", B: "Lower blood pressure", C: "Better judgment", D: "Calmness and good sleep"}, answer: "A"},
+{id: 47, question: "Illicit drugs are best defined as substances that are:", options: {A: "Sold only with a government licence", B: "Legally available for purchase and use", C: "Illegal or prohibited by law to manufacture, cultivate, import, possess, distribute, sell or use", D: "Always prescribed by doctors"}, answer: "C"},
+{id: 48, question: "Drug misuse can lead to adverse health outcomes including overdose, addiction and:", options: {A: "Faster wound healing", B: "Stronger bones", C: "Improved eyesight", D: "The development of drug-resistant micro-organisms that can cause infectious diseases"}, answer: "D"},
+{id: 49, question: "Why is understanding terms like drug abuse, drug misuse and drug dependence important?", options: {A: "To make drugs more affordable", B: "To help market drugs more effectively", C: "To avoid talking about drugs at all", D: "To recognise the signs of substance misuse and seek help when needed"}, answer: "D"},
+{id: 50, question: "According to their effects on the central nervous system, drugs are classified into stimulants, depressants and:", options: {A: "Hallucinogens", B: "Vitamins", C: "Antibiotics", D: "Vaccines"}, answer: "A"},
+{id: 51, question: "Drugs that slow down the activity of the central nervous system are classified as:", options: {A: "Hallucinogens", B: "Depressants", C: "Stimulants", D: "Antiseptics"}, answer: "B"},
+{id: 52, question: "Drugs that distort perception, mood and consciousness are classified as:", options: {A: "Stimulants", B: "Depressants", C: "Hallucinogens", D: "Analgesics"}, answer: "C"},
+{id: 53, question: "Classifying drugs as natural, semi-synthetic or synthetic is classification according to:", options: {A: "Legal status", B: "Price", C: "Origin", D: "Colour"}, answer: "C"},
+{id: 54, question: "Cannabis is given as an example of a drug classified by origin as:", options: {A: "Natural", B: "Synthetic", C: "Therapeutic", D: "Semi-synthetic"}, answer: "A"},
+{id: 55, question: "According to origin, cocaine is described in the lesson as:", options: {A: "Semi-synthetic", B: "Fully synthetic", C: "Over-the-counter", D: "Natural"}, answer: "A"},
+{id: 56, question: "Amphetamine-type substances are given as an example of drugs that, by origin, are:", options: {A: "Natural", B: "Synthetic (manufactured in the laboratory)", C: "Semi-synthetic", D: "Herbal"}, answer: "B"},
+{id: 57, question: "Which of the following is one of the legal-status categories used to classify drugs?", options: {A: "Restricted to medical prescription", B: "Classified by country of origin only", C: "Classified by smell", D: "Classified by packaging colour"}, answer: "A"},
+{id: 58, question: "Caffeine, nicotine, amphetamine and cocaine are all examples of:", options: {A: "Hallucinogens", B: "Depressants", C: "Stimulants", D: "Antibiotics"}, answer: "C"},
+{id: 59, question: "The main psychoactive ingredient in tobacco products is:", options: {A: "Caffeine", B: "Nicotine", C: "Alcohol", D: "Psilocybin"}, answer: "B"},
+{id: 60, question: "Cocaine is derived from:", options: {A: "The cannabis plant", B: "Opium poppy", C: "The coca bush (Erythroxylon coca)", D: "Tobacco leaves"}, answer: "C"},
+{id: 61, question: "Which of the following is a DEPRESSANT?", options: {A: "Cocaine", B: "Alcohol", C: "LSD", D: "Amphetamine"}, answer: "B"},
+{id: 62, question: "Benzodiazepines such as Xanax, Valium and Rohypnol are classified as:", options: {A: "Depressants", B: "Antibiotics", C: "Stimulants", D: "Hallucinogens"}, answer: "A"},
+{id: 63, question: "Barbiturates such as phenobarbital and amobarbital are best described as drugs that:", options: {A: "Cure bacterial infections", B: "Cause relaxation/drowsiness and can prevent convulsions and seizures", C: "Cause vivid hallucinations", D: "Increase alertness and energy"}, answer: "B"},
+{id: 64, question: "Why is alcohol classified as a depressant?", options: {A: "Because it depresses the cerebral cortex, which houses the centres of judgment and self-control", B: "Because it has no effect on the brain", C: "Because it makes drinkers feel energetic and alert", D: "Because it strengthens the nervous system"}, answer: "A"},
+{id: 65, question: "Fetal Alcohol Syndrome (FAS), an abnormal fetal growth, is associated with:", options: {A: "Nicotine patches", B: "Chronic alcohol abuse in pregnant women", C: "Caffeine consumption", D: "Cocaine use"}, answer: "B"},
+{id: 66, question: "LSD, psilocybin mushrooms and MDMA are examples of:", options: {A: "Hallucinogens", B: "Stimulants", C: "Depressants", D: "Barbiturates"}, answer: "A"},
+{id: 67, question: "\"Magic mushrooms\" contain which psychoactive compound?", options: {A: "Nicotine", B: "Ephedrine", C: "Psilocybin", D: "Caffeine"}, answer: "C"},
+{id: 68, question: "MDMA is also commonly known as:", options: {A: "Crack or freebase", B: "Speed or ice", C: "Coke or snow", D: "Ecstasy or molly"}, answer: "D"},
+{id: 69, question: "Methamphetamine, in its crystalline form, was first synthesised from:", options: {A: "Cannabis resin", B: "Alcohol", C: "Caffeine", D: "Ephedrine"}, answer: "D"},
+{id: 70, question: "Ingesting drugs through the mouth so they are absorbed into the bloodstream through the gastrointestinal tract is called:", options: {A: "Transdermal administration", B: "Injection", C: "Oral administration", D: "Inhalation"}, answer: "C"},
+{id: 71, question: "Which is described as one of the MOST COMMON routes of drug intake?", options: {A: "Buccal administration", B: "Rectal administration", C: "Transdermal administration", D: "Oral administration"}, answer: "D"},
+{id: 72, question: "Inhaling drugs through the nose or mouth is the route known as:", options: {A: "Inhalation", B: "Injection", C: "Rectal administration", D: "Sublingual administration"}, answer: "A"},
+{id: 73, question: "Inhalation is often associated with which substances?", options: {A: "Antacids and laxatives", B: "Insulin and vaccines", C: "Tobacco, marijuana and cocaine", D: "Antibiotics and vitamins"}, answer: "C"},
+{id: 74, question: "Why does inhalation contribute to a high abuse potential?", options: {A: "It is painless to administer", B: "It produces a quick onset of action, with effects felt within seconds to minutes", C: "It avoids all health consequences", D: "It is the cheapest route"}, answer: "B"},
+{id: 75, question: "Administering drugs directly into the bloodstream or tissues using a syringe and needle is called:", options: {A: "Sublingual administration", B: "Injection", C: "Transdermal administration", D: "Oral administration"}, answer: "B"},
+{id: 76, question: "A major risk associated with injecting drug use is:", options: {A: "Stronger veins", B: "Faster recovery from illness", C: "Improved circulation", D: "Transmission of blood-borne diseases such as HIV and hepatitis"}, answer: "D"},
+{id: 77, question: "Applying drugs to the skin so they are absorbed into the bloodstream over time (for example through patches and creams) is the route called:", options: {A: "Transdermal administration", B: "Injection", C: "Inhalation", D: "Rectal administration"}, answer: "A"},
+{id: 78, question: "Inserting drugs into the rectum, where they are absorbed through the rectal mucosa, is called:", options: {A: "Buccal administration", B: "Sublingual administration", C: "Oral administration", D: "Rectal administration"}, answer: "D"},
+{id: 79, question: "Rectal administration is sometimes used when:", options: {A: "The drug tastes unpleasant", B: "The drug is illegal", C: "Oral administration is not feasible, such as in cases of nausea or vomiting", D: "The patient wants a slower effect"}, answer: "C"},
+{id: 80, question: "Placing a drug under the tongue to dissolve and be absorbed into the bloodstream is called:", options: {A: "Transdermal administration", B: "Inhalation", C: "Sublingual administration", D: "Buccal administration"}, answer: "C"},
+{id: 81, question: "Placing a drug between the cheek and gum to dissolve and be absorbed is called:", options: {A: "Oral administration", B: "Rectal administration", C: "Injection", D: "Buccal administration"}, answer: "D"},
+{id: 82, question: "Which route allows rapid and precise delivery of drugs, resulting in immediate effects?", options: {A: "Oral administration", B: "Rectal administration", C: "Transdermal administration", D: "Injection"}, answer: "D"},
+{id: 83, question: "Heroin, methamphetamine and cocaine are commonly abused via which particularly risky route?", options: {A: "Injection", B: "Transdermal administration", C: "Rectal administration", D: "Buccal administration"}, answer: "A"},
+{id: 84, question: "Chronic inhalant abuse can lead to:", options: {A: "Respiratory problems, cardiovascular issues and neurological damage", B: "Stronger lungs", C: "Improved heart function", D: "No long-term harm"}, answer: "A"},
+{id: 85, question: "Tablets, capsules and liquids are common forms of drugs taken via which route?", options: {A: "Transdermal administration", B: "Inhalation", C: "Oral administration", D: "Injection"}, answer: "C"},
+{id: 86, question: "Both the sublingual and buccal routes are notable for allowing:", options: {A: "No absorption at all", B: "Absorption only through the skin", C: "Rapid absorption of the substance", D: "Very slow absorption over weeks"}, answer: "C"},
+{id: 87, question: "Injecting drug use is associated with a high risk of overdose mainly because:", options: {A: "It is always done in hospitals", B: "Individuals may miscalculate the dose or purity of the drug", C: "Needles are expensive", D: "It takes a long time to feel effects"}, answer: "B"},
+{id: 88, question: "Which of the following is NOT a route of drug administration discussed in the lesson?", options: {A: "Oral administration", B: "Injection", C: "Inhalation", D: "Photosynthesis"}, answer: "D"},
+{id: 89, question: "Understanding the various routes of drug administration is important because it helps in:", options: {A: "Increasing the strength of drugs", B: "Making drugs cheaper to buy", C: "Comprehending the patterns and risks associated with substance abuse", D: "Hiding drug use from others"}, answer: "C"},
+{id: 90, question: "Which of the following is a physical sign of drug abuse?", options: {A: "Frequent smiling", B: "Needle marks on skin", C: "Improved academic performance", D: "Enhanced coordination"}, answer: "B"},
+{id: 91, question: "What is a common behavioral symptom of drug abuse?", options: {A: "Secretiveness", B: "Increased honesty", C: "Better time management", D: "Improved relationships"}, answer: "A"},
+{id: 92, question: "Which of the following is NOT mentioned as a risk factor for drug abuse?", options: {A: "Genetics", B: "Peer influence", C: "Regular exercise", D: "Mental health disorders"}, answer: "C"},
+{id: 93, question: "Which biological factor increases vulnerability to drug abuse?", options: {A: "High self-esteem", B: "Genetics", C: "Excellent physical health", D: "Strong family support"}, answer: "B"},
+{id: 94, question: "What psychological factor can contribute to drug abuse?", options: {A: "High stress management skills", B: "Trauma", C: "Emotional stability", D: "Strong coping mechanisms"}, answer: "B"},
+{id: 95, question: "Which mental health disorder is NOT mentioned as increasing risk for drug abuse?", options: {A: "Depression", B: "Anxiety", C: "Bipolar disorder", D: "Perfect mental health"}, answer: "D"},
+{id: 96, question: "What is a short-term physical effect of drug abuse?", options: {A: "Improved physical health", B: "Enhanced coordination", C: "Intoxication", D: "Increased lung capacity"}, answer: "C"},
+{id: 97, question: "Which of the following is a long-term consequence of drug abuse?", options: {A: "Improved memory", B: "Enhanced cognitive function", C: "Organ damage", D: "Better physical fitness"}, answer: "C"},
+{id: 98, question: "What social consequence can result from drug abuse?", options: {A: "Stronger family bonds", B: "Improved relationships", C: "Breakdown of relationships", D: "Better social integration"}, answer: "C"},
+{id: 99, question: "Which economic consequence is associated with drug abuse?", options: {A: "Increased financial stability", B: "Better job opportunities", C: "Loss of income", D: "Improved productivity"}, answer: "C"},
+{id: 100, question: "What is a psychological consequence of drug abuse?", options: {A: "Improved mental health", B: "Enhanced emotional stability", C: "Mood swings", D: "Better cognitive function"}, answer: "C"},
+{id: 101, question: "Which of the following is a sign of drug abuse related to appearance?", options: {A: "Well-groomed appearance", B: "Unhealthy appearance", C: "Improved personal hygiene", D: "Better clothing choices"}, answer: "B"},
+{id: 102, question: "What environmental factor increases risk of drug abuse?", options: {A: "Limited drug availability", B: "Strict drug enforcement", C: "Easy access to drugs", D: "Strong community support"}, answer: "C"},
+{id: 103, question: "Which of the following is a sign of drug abuse related to eyes?", options: {A: "Bright, clear eyes", B: "Improved vision", C: "Bloodshot eyes", D: "Better eye coordination"}, answer: "C"},
+{id: 104, question: "What is a consequence of drug abuse on academic performance?", options: {A: "Improved grades", B: "Better attendance", C: "Increased motivation", D: "Decreased cognitive function"}, answer: "D"},
+{id: 105, question: "Which of the following is a risk factor for drug abuse related to social determinants?", options: {A: "High socioeconomic status", B: "Excellent education access", C: "Poverty", D: "Strong community support"}, answer: "C"},
+{id: 106, question: "What is a physical sign of drug abuse related to the mouth?", options: {A: "Improved dental health", B: "Stronger gums", C: "Better breath", D: "Mouth sores, gum disease and tooth decay"}, answer: "D"},
+{id: 107, question: "Which of the following is a psychological consequence of drug abuse?", options: {A: "Improved mental clarity", B: "Enhanced emotional stability", C: "Paranoia, hallucination and delusion", D: "Better decision-making skills"}, answer: "C"},
+{id: 108, question: "What is a sign of drug abuse related to behavior?", options: {A: "Increased honesty", B: "Better time management", C: "Lying and chronic dishonesty", D: "Improved relationships"}, answer: "C"},
+{id: 109, question: "Which of the following is a risk factor for drug abuse related to employment?", options: {A: "Stable career", B: "Job satisfaction", C: "Unemployment", D: "Regular income"}, answer: "C"},
+{id: 110, question: "What is a physical consequence of drug abuse related to the respiratory system?", options: {A: "Improved lung function", B: "Better breathing capacity", C: "Respiratory problems, including lung damage", D: "Enhanced oxygen intake"}, answer: "C"},
+{id: 111, question: "Which of the following is a sign of drug abuse related to sleep patterns?", options: {A: "Better sleep quality", B: "Regular sleep schedule", C: "Sleeping at odd hours", D: "Improved restfulness"}, answer: "C"},
+{id: 112, question: "What is a social consequence of drug abuse related to legal issues?", options: {A: "Better relationship with law enforcement", B: "Improved legal standing", C: "Problems with Law Enforcement Agents", D: "Enhanced community safety"}, answer: "C"},
+{id: 113, question: "Which of the following is a risk factor for drug abuse related to personality traits?", options: {A: "High self-esteem", B: "Strong impulse control", C: "Impulsivity, sensation-seeking and low self-esteem", D: "Excellent decision-making skills"}, answer: "C"},
+{id: 114, question: "What is a physical sign of drug abuse related to the hands?", options: {A: "Improved dexterity", B: "Better grip strength", C: "Yellow fingertips", D: "Enhanced coordination"}, answer: "C"},
+{id: 115, question: "Which of the following is a consequence of drug abuse on the immune system?", options: {A: "Strengthened immune system", B: "Better resistance to infections", C: "Weakened immune system making the individual more susceptible to infections", D: "Enhanced recovery from illness"}, answer: "C"},
+{id: 116, question: "What is a sign of drug abuse related to speech?", options: {A: "Improved articulation", B: "Better communication skills", C: "Slurred speech", D: "Enhanced vocabulary"}, answer: "C"},
+{id: 117, question: "Which of the following is a consequence of drug abuse related to the cardiovascular system?", options: {A: "Improved heart health", B: "Better blood circulation", C: "Increased risk of heart attack, stroke and other cardiovascular problems", D: "Lower blood pressure"}, answer: "C"},
+{id: 118, question: "What is a sign of drug abuse related to school performance?", options: {A: "Improved grades", B: "Better attendance", C: "Truancy and lateness to school", D: "Enhanced participation"}, answer: "C"},
+{id: 119, question: "Which of the following is a psychological consequence of drug abuse?", options: {A: "Improved emotional stability", B: "Enhanced mental clarity", C: "Increased risk of suicide and self-harm", D: "Better stress management"}, answer: "C"},
+{id: 120, question: "Which of the following is a SHORT-TERM physical effect of drug use?", options: {A: "Chronic lung disease", B: "Kidney failure", C: "Liver cirrhosis", D: "Impaired coordination and motor skills"}, answer: "D"},
+{id: 121, question: "Opioids and depressants can suppress breathing, leading to:", options: {A: "Faster breathing and more oxygen", B: "Respiratory depression and even respiratory arrest", C: "Stronger lungs", D: "No effect on breathing"}, answer: "B"},
+{id: 122, question: "Prolonged drug abuse can damage which vital organs?", options: {A: "The liver, kidneys, heart and lungs", B: "Only the skin", C: "Only the eyes", D: "Only the bones"}, answer: "A"},
+{id: 123, question: "When continued drug use requires higher and higher doses to achieve the desired effect, this is called:", options: {A: "Detoxification", B: "Tolerance", C: "Withdrawal", D: "Recovery"}, answer: "B"},
+{id: 124, question: "Which chronic health condition is particularly associated with injection drug users?", options: {A: "Flat feet", B: "Common cold", C: "HIV/AIDS and hepatitis", D: "Short-sightedness"}, answer: "C"},
+{id: 125, question: "Which of the following is a SOCIAL consequence of drug abuse?", options: {A: "Improved family relationships", B: "Breakdown of relationships and family disintegration", C: "Increased savings", D: "Higher academic grades"}, answer: "B"},
+{id: 126, question: "Which of the following is an ECONOMIC consequence of drug abuse?", options: {A: "Higher national income", B: "Improved community productivity", C: "Increased healthcare costs for treatment and rehabilitation", D: "Lower crime rates"}, answer: "C"},
+{id: 127, question: "Which of the following is a PSYCHOLOGICAL consequence of drug abuse?", options: {A: "Greater emotional stability", B: "Reduced risk of self-harm", C: "Improved memory and focus", D: "Paranoia, hallucination and delusion"}, answer: "D"},
+{id: 128, question: "Because psychoactive drug use exerts major action on the brain, drug addiction is sometimes referred to as:", options: {A: "A lifestyle choice with no health effects", B: "A brain disease", C: "A heart disease", D: "A skin disease"}, answer: "B"},
+{id: 129, question: "Which of the following mental health disorders is commonly associated with drug abuse?", options: {A: "Perfect emotional balance", B: "Depression", C: "Improved concentration", D: "Heightened immunity"}, answer: "B"},
+{id: 130, question: "The impact of drug abuse on academic performance includes:", options: {A: "Higher grades and better attendance", B: "Improved memory retention", C: "Decreased motivation, poor attendance and increased risk of dropping out of school", D: "Better decision-making skills"}, answer: "C"},
+{id: 131, question: "Which of the following is a LONG-TERM physical effect of drug abuse?", options: {A: "Temporary euphoria", B: "Short-lived nausea", C: "Organ damage and conditions like liver cirrhosis and heart disease", D: "Briefly dilated pupils"}, answer: "C"},
+{id: 132, question: "Drug abuse weakens the immune system, making the individual:", options: {A: "More resistant to all diseases", B: "More susceptible to infections", C: "Unable to fall ill", D: "Immune to hepatitis"}, answer: "B"},
+{id: 133, question: "\"Meth mouth\" - mouth sores, gum disease and tooth decay from smoking drugs - is an example of which kind of consequence?", options: {A: "Physical (dental health) consequence", B: "Legal consequence", C: "Spiritual consequence", D: "Economic consequence"}, answer: "A"},
+{id: 134, question: "Increased risk of domestic violence and child abuse linked to drug abuse is classified as which kind of consequence?", options: {A: "Economic consequence", B: "Academic consequence", C: "Physical consequence", D: "Social consequence"}, answer: "D"},
+{id: 135, question: "Which statement best describes the relationship between drug use and mental health?", options: {A: "It is complex - drug abuse can worsen or trigger disorders, and people with pre-existing disorders may be more vulnerable to substance abuse", B: "Only drugs cause mental health problems and never the other way round", C: "There is no relationship at all", D: "It is simple - drugs always improve mental health"}, answer: "A"},
+{id: 136, question: "Loss of income and employment due to decreased productivity and absenteeism is which kind of consequence?", options: {A: "Economic consequence", B: "Psychological consequence", C: "Academic consequence", D: "Physical consequence"}, answer: "A"},
+{id: 137, question: "Intoxication that causes euphoria, altered perception, relaxation or stimulation is described as which type of effect?", options: {A: "A short-term physical effect", B: "A purely economic effect", C: "An academic effect", D: "A long-term effect"}, answer: "A"},
+{id: 138, question: "For individuals with co-occurring substance abuse and mental health disorders, healthcare providers are advised to:", options: {A: "Avoid treatment entirely", B: "Treat only the mental health issue and ignore the substance use", C: "Address both the substance abuse and mental health issues concurrently with comprehensive treatment", D: "Treat only the substance use and ignore the mental health issue"}, answer: "C"},
+{id: 139, question: "Social consequences of drug abuse can worsen the problem because they:", options: {A: "Make it easier to seek help", B: "Improve the person's finances", C: "Remove all stigma", D: "Make it difficult for the person to seek help and support, creating a cycle of addiction and isolation"}, answer: "D"},
+{id: 140, question: "Genetics and a family history of addiction are part of which risk factor for drug abuse?", options: {A: "Environmental factor", B: "Biological factor", C: "Peer influence", D: "Economic factor"}, answer: "B"},
+{id: 141, question: "Which personality traits are associated with an increased likelihood of engaging in drug abuse?", options: {A: "Patience, calmness and discipline", B: "Cautiousness and contentment", C: "Impulsivity, sensation-seeking and low self-esteem", D: "High self-esteem and resilience"}, answer: "C"},
+{id: 142, question: "Turning to drug use as a way of coping with psychological stress or trauma is an example of which risk factor?", options: {A: "Biological factor", B: "Drug availability", C: "Psychological factor", D: "Peer influence"}, answer: "C"},
+{id: 143, question: "People with depression, anxiety, bipolar disorder or PTSD are at increased risk of drug abuse mainly because they may:", options: {A: "Have stronger willpower", B: "Be immune to addiction", C: "Attempt to self-medicate or alleviate their symptoms with substances", D: "Never feel stress"}, answer: "C"},
+{id: 144, question: "Peer pressure and social norms within peer groups most strongly influence drug use among:", options: {A: "Only people over 60", B: "Adolescents and young adults", C: "The elderly", D: "Newborn babies"}, answer: "B"},
+{id: 145, question: "Which of the following is described as a social determinant of drug abuse?", options: {A: "Strong, drug-free family environments", B: "Poverty, unemployment and lack of access to education and resources", C: "High community resilience", D: "Excellent healthcare for everyone"}, answer: "B"},
+{id: 146, question: "Poverty can contribute to drug abuse because it can:", options: {A: "Create feelings of hopelessness and despair, leading some individuals to use drugs to cope", B: "Eliminate stress entirely", C: "Provide better access to treatment", D: "Guarantee good mental health"}, answer: "A"},
+{id: 147, question: "Unemployment is a risk factor for drug abuse because it can lead to:", options: {A: "Financial strain, loss of social support and feelings of inadequacy", B: "Improved self-esteem", C: "Better job prospects", D: "More leisure time and happiness"}, answer: "A"},
+{id: 148, question: "Easy access to drugs, whether through legal or illegal means, increases the likelihood of:", options: {A: "Reduced drug use", B: "Better community health", C: "Lower addiction rates", D: "Experimentation and regular use"}, answer: "D"},
+{id: 149, question: "Which of the following are described as environmental cues and triggers that can promote drug use behaviours?", options: {A: "Quiet rooms and meditation", B: "Strong family bonds", C: "Advertisements, peer influence and social gatherings", D: "Healthy diets and exercise"}, answer: "C"},
+{id: 150, question: "A family history of addiction is a significant predictor of drug abuse because it indicates:", options: {A: "That treatment is impossible", B: "That the person will never use drugs", C: "That addiction is purely a moral failing", D: "A genetic component to the disorder"}, answer: "D"},
+{id: 151, question: "Exposure to environments where drug use is normalised or glamorised - for example through media or social networks - can:", options: {A: "Influence attitudes and behaviours towards substance use", B: "Cure existing addictions", C: "Have no effect on behaviour", D: "Always discourage drug use"}, answer: "A"},
+{id: 152, question: "Why might individuals from marginalised communities experience greater vulnerability to drug abuse?", options: {A: "Because they have stronger support systems", B: "Because they have better healthcare access", C: "Because of higher incomes", D: "Because of socio-economic disparities, cultural marginalisation and limited access to resources"}, answer: "D"},
+{id: 153, question: "Which statement about risk factors for drug abuse is TRUE?", options: {A: "Everyone has exactly the same risk", B: "Individuals may face compounded risk from a combination of biological, psychological, social and environmental influences", C: "Risk factors do not exist", D: "Only biological factors matter"}, answer: "B"},
+{id: 154, question: "Using a substance for temporary relief from stress or trauma can:", options: {A: "Build long-term resilience", B: "Permanently solve the underlying problem", C: "Have no downside", D: "Worsen mental health issues and contribute to a cycle of dependence"}, answer: "D"},
+{id: 155, question: "Drug availability, accessibility and exposure are grouped under which type of risk factor?", options: {A: "Environmental factors", B: "Genetic factors", C: "Psychological factors", D: "Biological factors"}, answer: "A"},
+{id: 156, question: "Communities with high levels of poverty, unemployment and social disorganisation may have:", options: {A: "Lower rates of drug abuse", B: "Higher rates of drug abuse due to limited opportunities and resources", C: "No drug abuse at all", D: "Better access to treatment"}, answer: "B"},
+{id: 157, question: "Socio-economic disparities in access to healthcare, housing and social services contribute to drug abuse because affected individuals may be:", options: {A: "More able to recover quickly", B: "Unaffected by drug problems", C: "Less able to seek help for substance abuse or to address underlying factors", D: "Automatically protected from addiction"}, answer: "C"},
+{id: 158, question: "Co-occurring mental health disorders and substance abuse together tend to create:", options: {A: "A quick natural cure", B: "A vicious cycle of dependence and worsening mental health outcomes", C: "No particular pattern", D: "Improved long-term health"}, answer: "B"},
+{id: 159, question: "Which of the following is NOT listed as a risk factor for drug abuse in the lesson?", options: {A: "Regular participation in supervised physical exercise", B: "Peer influence", C: "Easy availability of drugs", D: "Poverty and unemployment"}, answer: "A"},
+{id: 160, question: "Which of the following is a possible PHYSICAL sign of drug abuse?", options: {A: "Clearer skin", B: "Sharper vision", C: "Needle marks on the skin", D: "Improved muscle strength"}, answer: "C"},
+{id: 161, question: "Yellow fingertips can be a possible sign of:", options: {A: "A balanced diet", B: "Regular exercise", C: "Drug abuse", D: "Good health"}, answer: "C"},
+{id: 162, question: "Which of the following is a behavioural sign of drug abuse?", options: {A: "Punctuality at school", B: "Honesty in all dealings", C: "Openness and transparency", D: "Secretiveness"}, answer: "D"},
+{id: 163, question: "Mouth sores, gum disease and tooth decay (\"meth mouth\") can result from:", options: {A: "Smoking drugs", B: "Drinking water", C: "Brushing teeth regularly", D: "Eating fruits"}, answer: "A"},
+{id: 164, question: "Which of the following school- or work-related changes may indicate drug abuse?", options: {A: "Lateness, truancy or a drop in grades or work performance", B: "Improved grades and attendance", C: "More consistent attendance", D: "Greater concentration"}, answer: "A"},
+{id: 165, question: "Money-related behaviour that may indicate drug abuse includes:", options: {A: "Donating money to charity", B: "Earning extra income legally", C: "Saving money carefully", D: "Requests for money without reasonable explanation; money missing or stolen"}, answer: "D"},
+{id: 166, question: "Which eye-related sign is associated with drug abuse?", options: {A: "Bright, clear eyes", B: "Reduced eye fatigue", C: "Perfect 20/20 vision", D: "Bloodshot eyes or larger-than-usual pupils"}, answer: "D"},
+{id: 167, question: "Which of the following is a psychological sign of drug abuse?", options: {A: "Improved memory", B: "Better judgment", C: "Confusion, delusion and hallucinations", D: "Calmness and emotional balance"}, answer: "C"},
+{id: 168, question: "Black lips and palms can be a possible sign of:", options: {A: "A nutritious diet", B: "Healthy circulation", C: "Drug abuse", D: "Good hydration"}, answer: "C"},
+{id: 169, question: "Which statement best describes identifying a drug user from the listed signs?", options: {A: "Only a laboratory test can ever be wrong", B: "It is really difficult, and the listed signs only serve as a guide", C: "A single sign always confirms drug use", D: "It is always easy and certain"}, answer: "B"},
+{id: 170, question: "Drowsiness, slurred speech, tremor or impaired coordination are described as:", options: {A: "Possible signs of drug abuse", B: "Signs of excellent health", C: "Normal ageing only", D: "Effects of exercise"}, answer: "A"},
+{id: 171, question: "Chronic dishonesty and lying are listed as:", options: {A: "Possible signs of drug abuse", B: "Normal teenage behaviour with no concern", C: "Signs of strong character", D: "Healthy coping strategies"}, answer: "A"},
+{id: 172, question: "Cravings for certain foods at unusual times can be a possible sign of:", options: {A: "Good metabolism", B: "Proper meal planning", C: "Drug abuse", D: "A healthy appetite"}, answer: "C"},
+{id: 173, question: "Which appearance-related change may indicate drug abuse?", options: {A: "Improved personal hygiene", B: "Neat, well-kept clothing", C: "A fresh and healthy look", D: "An unhealthy appearance in clothing, grooming or looks"}, answer: "D"},
+{id: 174, question: "Cough and frequent lung infections can be a sign of drug abuse, especially when drugs are:", options: {A: "Used in moderation under supervision", B: "Taken as prescribed", C: "Avoided entirely", D: "Smoked"}, answer: "D"},
+{id: 175, question: "Psychotic and violent behaviour (aggressive and hostile) is listed as:", options: {A: "A sign of good leadership", B: "A possible sign of drug abuse", C: "A sign of physical fitness", D: "A normal reaction to stress with no concern"}, answer: "B"},
+{id: 176, question: "Which of the following is listed among the signs of drug abuse?", options: {A: "Consistently meeting all obligations and responsibilities", B: "Strong sense of duty", C: "Reliability at work", D: "Not meeting obligations and responsibilities"}, answer: "D"},
+{id: 177, question: "Dry mouth, sniffing and a runny nose are listed as:", options: {A: "Normal effects of exercise", B: "Signs of proper hydration", C: "Signs of good health", D: "Possible signs of drug abuse"}, answer: "D"},
+{id: 178, question: "A sudden sense of euphoria or feeling \"high\" is listed as:", options: {A: "A sign of natural happiness only", B: "A possible sign of drug abuse", C: "A normal mood with no concern", D: "An effect of a good night sleep"}, answer: "B"},
+{id: 179, question: "Which of the following is NOT listed as a sign of drug abuse?", options: {A: "Problems concentrating or thinking clearly", B: "Difficulty sleeping at night or sleeping too long", C: "Impaired memory and short attention span", D: "Improved memory and longer attention span"}, answer: "D"},
+{id: 180, question: "Which of the following is a physical sign of drug abuse?", options: {A: "Needle marks on the skin", B: "Improved athletic performance", C: "Enhanced memory", D: "Better personal hygiene"}, answer: "A"},
+{id: 181, question: "What is a common behavioral symptom associated with drug abuse?", options: {A: "Secretiveness", B: "Increased honesty", C: "Better time management", D: "Improved relationships"}, answer: "A"},
+{id: 182, question: "Which of the following is a biological risk factor for drug abuse?", options: {A: "Genetics", B: "Peer pressure", C: "Unemployment", D: "Poverty"}, answer: "A"},
+{id: 183, question: "Individuals with which condition are at an increased risk of drug abuse as a form of self-medication?", options: {A: "Co-occurring mental health disorders", B: "Perfect physical health", C: "High socioeconomic status", D: "Strong family support"}, answer: "A"},
+{id: 184, question: "What is a long-term physical consequence of prolonged drug abuse?", options: {A: "Organ damage", B: "Temporary euphoria", C: "Improved coordination", D: "Weight gain"}, answer: "A"},
+{id: 185, question: "Which of the following is a social consequence of drug abuse?", options: {A: "Breakdown of relationships", B: "Stronger family bonds", C: "Increased social support", D: "Better job performance"}, answer: "A"},
+{id: 186, question: "What is the primary purpose of detoxification in a drug treatment program?", options: {A: "To manage withdrawal symptoms as the body rids itself of the drug", B: "To provide long-term psychological counseling", C: "To punish the individual for drug use", D: "To find employment for the individual"}, answer: "A"},
+{id: 187, question: "Which psychosocial intervention helps individuals identify and change harmful thought patterns related to substance use?", options: {A: "Cognitive Behavioral Therapy (CBT)", B: "Mutual Help Support", C: "Harm Reduction", D: "Pharmacotherapy"}, answer: "A"},
+{id: 188, question: "'Meth mouth' refers to which set of physical symptoms?", options: {A: "Mouth sores, gum disease, and tooth decay", B: "Improved sense of taste", C: "Whiter teeth and stronger gums", D: "Frequent nosebleeds"}, answer: "A"},
+{id: 189, question: "Which of the following is an environmental risk factor for drug abuse?", options: {A: "Easy availability of drugs", B: "Strong anti-drug laws", C: "Living in a drug-free community", D: "Having no family history of addiction"}, answer: "A"},
+{id: 190, question: "Which economic consequence is often associated with drug abuse?", options: {A: "Loss of income and employment", B: "Increased financial stability", C: "Better job opportunities", D: "Higher productivity"}, answer: "A"},
+{id: 191, question: "What is a key characteristic of Inpatient/Residential Treatment?", options: {A: "The individual lives at the treatment facility", B: "The individual attends therapy while living at home", C: "It is only available for a few hours a week", D: "It focuses solely on medication without therapy"}, answer: "A"},
+{id: 192, question: "Which of the following is a psychological consequence of drug abuse?", options: {A: "Paranoia and hallucinations", B: "Improved cognitive function", C: "Enhanced decision-making skills", D: "Increased happiness"}, answer: "A"},
+{id: 193, question: "Which risk factor involves feeling pressured to conform to group norms regarding substance use?", options: {A: "Peer Influence", B: "Genetics", C: "Poverty", D: "Trauma"}, answer: "A"},
+{id: 194, question: "What is the main goal of Harm Reduction interventions?", options: {A: "To reduce the negative consequences associated with drug use", B: "To achieve immediate and complete abstinence", C: "To incarcerate drug users", D: "To punish drug dealers"}, answer: "A"},
+{id: 195, question: "Which of the following is a short-term effect of drug intoxication?", options: {A: "Impaired coordination", B: "Improved memory", C: "Enhanced senses", D: "Better reflexes"}, answer: "A"},
+{id: 196, question: "Which treatment setting is most suitable for individuals with jobs or extensive social supports?", options: {A: "Outpatient Treatment", B: "Inpatient/Residential Treatment", C: "Community Based Treatment", D: "Holistic Therapy"}, answer: "A"},
+{id: 197, question: "Which of the following is a sign of drug abuse related to the eyes?", options: {A: "Bloodshot eyes", B: "Improved vision", C: "Brighter eye color", D: "Better night vision"}, answer: "A"},
+{id: 198, question: "Unemployment can be a significant risk factor for drug abuse because it can lead to:", options: {A: "Financial strain and feelings of inadequacy", B: "Increased social status", C: "More disposable income", D: "Better time management skills"}, answer: "A"},
+{id: 199, question: "Which of the following is an example of a Mutual Help Support group?", options: {A: "Narcotics Anonymous (NA)", B: "Cognitive Behavioral Therapy (CBT) session", C: "A government-run detox center", D: "A private pharmacotherapy clinic"}, answer: "A"},
+{id: 200, question: "What is a common impact of drug abuse on academic performance?", options: {A: "Truancy and a drop in grades", B: "Improved concentration in class", C: "Better relationships with teachers", D: "Increased motivation to study"}, answer: "A"},
+{id: 201, question: "Which personality trait is associated with an increased likelihood of engaging in drug abuse?", options: {A: "Impulsivity", B: "Patience", C: "High self-esteem", D: "Risk aversion"}, answer: "A"},
+{id: 202, question: "Contingency Management (CM) is based on which behavioral principle?", options: {A: "Rewarding positive behavior reinforces it", B: "Punishing negative behavior eliminates it", C: "Ignoring behavior leads to its extinction", D: "All behavior is genetically determined"}, answer: "A"},
+{id: 203, question: "Which of the following is a harm reduction intervention for people who inject drugs?", options: {A: "Needle and Syringe Programme (NSP)", B: "Inpatient surgery", C: "Prescription glasses", D: "Dietary counseling"}, answer: "A"},
+{id: 204, question: "Which of the following is a sign of drug abuse related to financial issues?", options: {A: "Requests for money without reasonable explanation", B: "Increased savings", C: "Better financial planning", D: "Investing in stocks"}, answer: "A"},
+{id: 205, question: "The relationship between drug use and mental health is often described as:", options: {A: "A complex, vicious cycle", B: "A simple cause-and-effect relationship", C: "Completely unrelated", D: "Beneficial for mental health"}, answer: "A"},
+{id: 206, question: "Which treatment approach aims to look at the whole person, including physical, emotional, social, and spiritual wellbeing?", options: {A: "Holistic Therapies", B: "Pharmacotherapy", C: "Detoxification", D: "Brief Interventions"}, answer: "A"},
+{id: 207, question: "Which of the following is a long-term effect of drug abuse on the respiratory system?", options: {A: "Chronic cough and lung damage", B: "Improved lung capacity", C: "Better breathing", D: "Stronger respiratory muscles"}, answer: "A"},
+{id: 208, question: "A person showing 'psychotic and violent behaviour' is likely experiencing what consequence of drug abuse?", options: {A: "Psychological consequence", B: "Physical health issue", C: "Economic benefit", D: "Social improvement"}, answer: "A"},
+{id: 209, question: "What is the typical duration for a detoxification process?", options: {A: "Seven (7) to Fourteen (14) days", B: "One to two hours", C: "Several months", D: "A full year"}, answer: "A"},
+{id: 210, question: "The first step in a drug treatment programme, which allows the body to rid itself of the drug while managing withdrawal symptoms, is:", options: {A: "Pharmacotherapy", B: "Contingency management", C: "Detoxification (withdrawal management)", D: "Mutual help support"}, answer: "C"},
+{id: 211, question: "Detoxification usually takes how long to complete?", options: {A: "1 to 2 days", B: "3 to 6 months", C: "1 to 2 years", D: "7 to 14 days"}, answer: "D"},
+{id: 212, question: "Detoxification interventions should be supervised by:", options: {A: "No one - it should be done alone", B: "Friends of the patient", C: "Medical personnel", D: "Untrained volunteers"}, answer: "C"},
+{id: 213, question: "The therapy that helps individuals identify and change harmful thought patterns and behaviours related to substance use is:", options: {A: "Cognitive Behavioral Therapy (CBT)", B: "Detoxification", C: "Needle and syringe programme", D: "Asset forfeiture"}, answer: "A"},
+{id: 214, question: "Rewarding a positive behaviour so that it is more likely to be repeated is the principle behind which intervention?", options: {A: "Contingency Management (CM)", B: "Harm reduction", C: "Detoxification", D: "Prosecution"}, answer: "A"},
+{id: 215, question: "Motivational approaches (Motivational Interviewing and Motivational Enhancement) are based on the perspective that:", options: {A: "Only medication can help", B: "Change happens instantly and never varies", C: "Motivation is unimportant in recovery", D: "Change occurs in stages, motivation varies over time, and motivation can be enhanced"}, answer: "D"},
+{id: 216, question: "A brief intervention typically lasts:", options: {A: "Several weeks of daily sessions", B: "From about 5 minutes (brief advice) to 15–30 minutes (brief counseling)", C: "Exactly 24 hours", D: "A full year"}, answer: "B"},
+{id: 217, question: "Counseling, as a psychosocial intervention, is best described as:", options: {A: "A police interrogation", B: "An interactive exchange between counselor and client to help the client explore problems and enhance capacity to solve them", C: "A medical surgery", D: "A court hearing"}, answer: "B"},
+{id: 218, question: "Measures designed to reduce the harms associated with substance use - such as needle and syringe programmes and naloxone distribution - are called:", options: {A: "Prosecution", B: "Harm reduction interventions", C: "Mutual help support", D: "Detoxification"}, answer: "B"},
+{id: 219, question: "Naloxone is used for:", options: {A: "Treating HIV", B: "Detoxification of alcohol only", C: "Curing hepatitis", D: "The management of opioid overdose"}, answer: "D"},
+{id: 220, question: "A Needle and Syringe Programme (NSP) is aimed at:", options: {A: "Only alcohol users", B: "People who smoke cannabis", C: "Tobacco users only", D: "People who inject drugs"}, answer: "D"},
+{id: 221, question: "Medication Assisted Treatment (MAT), also called drug substitution treatment, is mainly used for:", options: {A: "Hallucinogen use only", B: "Heroin and other opioids", C: "Caffeine dependence", D: "Nicotine only"}, answer: "B"},
+{id: 222, question: "The treatment approach that combines behavioral therapy and medications to treat co-occurring conditions and reduce the intensity of withdrawal symptoms is:", options: {A: "Pharmacotherapy", B: "Asset forfeiture", C: "Roadblocks and checkpoints", D: "Trend analysis"}, answer: "A"},
+{id: 223, question: "Alcoholics Anonymous (AA) and Narcotics Anonymous (NA) are examples of:", options: {A: "Pharmaceutical companies", B: "Mutual help and support groups", C: "Detoxification clinics", D: "Government law enforcement agencies"}, answer: "B"},
+{id: 224, question: "Alcoholics Anonymous and Narcotics Anonymous are based on the principles of:", options: {A: "Asset confiscation", B: "The 12 Step Approach with a strong spiritual emphasis", C: "Court-ordered punishment", D: "Strict medication-only treatment"}, answer: "B"},
+{id: 225, question: "The underlying philosophy of mutual help and support groups is that recovery from drug dependency is:", options: {A: "Impossible", B: "Possible, but there is no cure", C: "Guaranteed without any effort", D: "Only achievable through medication"}, answer: "B"},
+{id: 226, question: "The general aim of drug treatment is to help individuals with substance use disorders to:", options: {A: "Avoid all healthcare workers", B: "Find cheaper drugs", C: "Hide their drug use from family", D: "Achieve abstinence, reduce injury or death from high-risk drug use, and improve health and quality of life"}, answer: "D"},
+{id: 227, question: "Which of the following is a psychosocial intervention?", options: {A: "Eradicating cannabis farms", B: "Cognitive Behavioral Therapy (CBT)", C: "Border interdiction", D: "Asset forfeiture"}, answer: "B"},
+{id: 228, question: "A brief intervention can be conducted with:", options: {A: "Only individuals, never groups", B: "Individuals, couples, small groups and family or support groups", C: "Only married couples", D: "Only large public audiences"}, answer: "B"},
+{id: 229, question: "Which statement about drug treatment is TRUE?", options: {A: "It never requires monitoring", B: "It is always the same length for everyone", C: "It only ever involves medication", D: "It can occur in various settings, take different forms and last different lengths of time depending on the severity of the problem and the type of drug used"}, answer: "D"},
+{id: 230, question: "Living in a treatment facility for a period of time to receive intensive, highly structured care and support is called:", options: {A: "Outpatient treatment", B: "Inpatient/residential treatment", C: "Community-based treatment", D: "Holistic therapy only"}, answer: "B"},
+{id: 231, question: "Receiving treatment while living at home and attending therapy sessions and support groups describes:", options: {A: "Residential treatment", B: "Detoxification only", C: "Outpatient treatment", D: "Inpatient treatment"}, answer: "C"},
+{id: 232, question: "Which treatment setting generally costs less than residential care and is often more suitable for people with jobs or extensive social supports?", options: {A: "Residential treatment", B: "Intensive hospital admission", C: "Outpatient treatment", D: "Inpatient treatment"}, answer: "C"},
+{id: 233, question: "Treatment that is located in the community, mobilising community resources and involving participation by community members, is:", options: {A: "Inpatient treatment", B: "Community-based treatment", C: "Holistic therapy only", D: "Detoxification"}, answer: "B"},
+{id: 234, question: "Community-based treatment functions on the same principles as residential treatment but is:", options: {A: "Restricted to hospitals", B: "More costly and less accessible", C: "Only available abroad", D: "Less costly and more accessible"}, answer: "D"},
+{id: 235, question: "An approach that aims to support the whole person - mental, physical, emotional, social and spiritual wellbeing - is called:", options: {A: "Detoxification", B: "Holistic therapies", C: "Asset forfeiture", D: "Inpatient treatment"}, answer: "B"},
+{id: 236, question: "Yoga, meditation, art therapy and acupuncture are examples of practices used in:", options: {A: "Roadblocks and checkpoints", B: "Prosecution", C: "Holistic therapies", D: "Border interdiction"}, answer: "C"},
+{id: 237, question: "Residential treatment is designed to help residents:", options: {A: "Avoid all therapy", B: "Hide from their families", C: "Examine damaging beliefs, self-concepts and destructive patterns of behaviour and adopt new, constructive ways to interact with others", D: "Continue using drugs safely"}, answer: "C"},
+{id: 238, question: "Community-based treatment is more suited for those:", options: {A: "With no social support at all", B: "Living in a stable and supportive environment, or who lack the financial resources for residential treatment", C: "Who need 24-hour medical supervision", D: "Who refuse any treatment"}, answer: "B"},
+{id: 239, question: "Which treatment setting is the MOST intensive and structured?", options: {A: "Outpatient treatment", B: "Community-based treatment", C: "Inpatient/residential treatment", D: "Holistic therapies"}, answer: "C"},
+{id: 240, question: "Outpatient treatment varies in:", options: {A: "The types and intensity of services offered", B: "The colour of the building only", C: "Nothing - it is identical everywhere", D: "The number of guards on duty"}, answer: "A"},
+{id: 241, question: "Which setting provides psychosocial interventions and a continuum of care, and is linked with community health and social services?", options: {A: "Holistic therapies", B: "Inpatient treatment", C: "Detoxification only", D: "Community-based treatment"}, answer: "D"},
+{id: 242, question: "Holistic therapies are typically used:", options: {A: "Only in prisons", B: "Only for legal cases", C: "Instead of all other treatment", D: "In addition to traditional and spiritual treatments"}, answer: "D"},
+{id: 243, question: "Which of the following is NOT one of the treatment settings discussed in the lesson?", options: {A: "Community-based treatment", B: "Inpatient/residential treatment", C: "Online gaming therapy", D: "Outpatient treatment"}, answer: "C"},
+{id: 244, question: "A person who needs intensive care and round-the-clock support away from home would most likely use:", options: {A: "Outpatient treatment", B: "Brief advice only", C: "Inpatient/residential treatment", D: "Community-based treatment"}, answer: "C"},
+{id: 245, question: "A working adult with strong social support who needs treatment but cannot leave home would most suitably use:", options: {A: "No treatment", B: "A prison sentence", C: "Outpatient treatment", D: "Inpatient/residential treatment"}, answer: "C"},
+{id: 246, question: "Community-based treatment relies on:", options: {A: "Only foreign experts", B: "Total isolation from the community", C: "Court orders only", D: "Mobilising community resources and participation by community members"}, answer: "D"},
+{id: 247, question: "The holistic approach looks at:", options: {A: "Only the person's mental health needs", B: "The whole person - physical, emotional, social and spiritual wellbeing as well as mental health", C: "Only the person's legal status", D: "Only the person's finances"}, answer: "B"},
+{id: 248, question: "Compared with residential treatment, outpatient treatment generally:", options: {A: "Costs the same", B: "Costs more", C: "Has no cost difference worth noting", D: "Costs less"}, answer: "D"},
+{id: 249, question: "A key feature of inpatient/residential treatment is that it is:", options: {A: "Conducted entirely online", B: "Loosely organised with no schedule", C: "Limited to a single counselling session", D: "Highly structured, with activities designed to help residents change destructive behaviour patterns"}, answer: "D"},
+{id: 250, question: "Which of the following is a physical sign of drug abuse mentioned in the document?", options: {A: "Needle marks on the skin", B: "Improved athletic performance", C: "Enhanced memory", D: "Better personal hygiene"}, answer: "A"},
+{id: 251, question: "What is a common behavioral symptom associated with drug abuse?", options: {A: "Secretiveness", B: "Increased honesty", C: "Better time management", D: "Improved relationships"}, answer: "A"},
+{id: 252, question: "Which of the following is a biological risk factor for drug abuse?", options: {A: "Genetics", B: "Peer pressure", C: "Unemployment", D: "Poverty"}, answer: "A"},
+{id: 253, question: "Individuals with which condition are at an increased risk of drug abuse as a form of self-medication?", options: {A: "Co-occurring mental health disorders", B: "Perfect physical health", C: "High socioeconomic status", D: "Strong family support"}, answer: "A"},
+{id: 254, question: "What is a long-term physical consequence of prolonged drug abuse?", options: {A: "Organ damage", B: "Temporary euphoria", C: "Improved coordination", D: "Weight gain"}, answer: "A"},
+{id: 255, question: "Which of the following is a social consequence of drug abuse?", options: {A: "Breakdown of relationships", B: "Stronger family bonds", C: "Increased social support", D: "Better job performance"}, answer: "A"},
+{id: 256, question: "What is the primary purpose of detoxification in a drug treatment program?", options: {A: "To manage withdrawal symptoms as the body rids itself of the drug", B: "To provide long-term psychological counseling", C: "To punish the individual for drug use", D: "To find employment for the individual"}, answer: "A"},
+{id: 257, question: "Which psychosocial intervention helps individuals identify and change harmful thought patterns related to substance use?", options: {A: "Cognitive Behavioral Therapy (CBT)", B: "Mutual Help Support", C: "Harm Reduction", D: "Pharmacotherapy"}, answer: "A"},
+{id: 258, question: "'Meth mouth' refers to which set of physical symptoms?", options: {A: "Mouth sores, gum disease, and tooth decay", B: "Improved sense of taste", C: "Whiter teeth and stronger gums", D: "Frequent nosebleeds"}, answer: "A"},
+{id: 259, question: "Which of the following is an environmental risk factor for drug abuse?", options: {A: "Easy availability of drugs", B: "Strong anti-drug laws", C: "Living in a drug-free community", D: "Having no family history of addiction"}, answer: "A"},
+{id: 260, question: "Which economic consequence is often associated with drug abuse?", options: {A: "Loss of income and employment", B: "Increased financial stability", C: "Better job opportunities", D: "Higher productivity"}, answer: "A"},
+{id: 261, question: "What is a key characteristic of Inpatient/Residential Treatment?", options: {A: "The individual lives at the treatment facility", B: "The individual attends therapy while living at home", C: "It is only available for a few hours a week", D: "It focuses solely on medication without therapy"}, answer: "A"},
+{id: 262, question: "Which of the following is a psychological consequence of drug abuse?", options: {A: "Paranoia and hallucinations", B: "Improved cognitive function", C: "Enhanced decision-making skills", D: "Increased happiness"}, answer: "A"},
+{id: 263, question: "Which risk factor involves feeling pressured to conform to group norms regarding substance use?", options: {A: "Peer Influence", B: "Genetics", C: "Poverty", D: "Trauma"}, answer: "A"},
+{id: 264, question: "What is the main goal of Harm Reduction interventions?", options: {A: "To reduce the negative consequences associated with drug use", B: "To achieve immediate and complete abstinence", C: "To incarcerate drug users", D: "To punish drug dealers"}, answer: "A"},
+{id: 265, question: "Which of the following is a short-term effect of drug intoxication?", options: {A: "Impaired coordination", B: "Improved memory", C: "Enhanced senses", D: "Better reflexes"}, answer: "A"},
+{id: 266, question: "Which treatment setting is most suitable for individuals with jobs or extensive social supports?", options: {A: "Outpatient Treatment", B: "Inpatient/Residential Treatment", C: "Community Based Treatment", D: "Holistic Therapy"}, answer: "A"},
+{id: 267, question: "Which of the following is a sign of drug abuse related to the eyes?", options: {A: "Bloodshot eyes", B: "Improved vision", C: "Brighter eye color", D: "Better night vision"}, answer: "A"},
+{id: 268, question: "Unemployment can be a significant risk factor for drug abuse because it can lead to:", options: {A: "Financial strain and feelings of inadequacy", B: "Increased social status", C: "More disposable income", D: "Better time management skills"}, answer: "A"},
+{id: 269, question: "Which of the following is an example of a Mutual Help Support group?", options: {A: "Narcotics Anonymous (NA)", B: "Cognitive Behavioral Therapy (CBT) session", C: "A government-run detox center", D: "A private pharmacotherapy clinic"}, answer: "A"},
+{id: 270, question: "What is a common impact of drug abuse on academic performance?", options: {A: "Truancy and a drop in grades", B: "Improved concentration in class", C: "Better relationships with teachers", D: "Increased motivation to study"}, answer: "A"},
+{id: 271, question: "Which personality trait is associated with an increased likelihood of engaging in drug abuse?", options: {A: "Impulsivity", B: "Patience", C: "High self-esteem", D: "Risk aversion"}, answer: "A"},
+{id: 272, question: "Contingency Management (CM) is based on which behavioral principle?", options: {A: "Rewarding positive behavior reinforces it", B: "Punishing negative behavior eliminates it", C: "Ignoring behavior leads to its extinction", D: "All behavior is genetically determined"}, answer: "A"},
+{id: 273, question: "Which of the following is a harm reduction intervention for people who inject drugs?", options: {A: "Needle and Syringe Programme (NSP)", B: "Inpatient surgery", C: "Prescription glasses", D: "Dietary counseling"}, answer: "A"},
+{id: 274, question: "Which of the following is a sign of drug abuse related to financial issues?", options: {A: "Requests for money without reasonable explanation", B: "Increased savings", C: "Better financial planning", D: "Investing in stocks"}, answer: "A"},
+{id: 275, question: "The relationship between drug use and mental health is often described as:", options: {A: "A complex, vicious cycle", B: "A simple cause-and-effect relationship", C: "Completely unrelated", D: "Beneficial for mental health"}, answer: "A"},
+{id: 276, question: "Which treatment approach aims to look at the whole person, including physical, emotional, social, and spiritual wellbeing?", options: {A: "Holistic Therapies", B: "Pharmacotherapy", C: "Detoxification", D: "Brief Interventions"}, answer: "A"},
+{id: 277, question: "Which of the following is a long-term effect of drug abuse on the respiratory system?", options: {A: "Chronic cough and lung damage", B: "Improved lung capacity", C: "Better breathing", D: "Stronger respiratory muscles"}, answer: "A"},
+{id: 278, question: "A person showing 'psychotic and violent behaviour' is likely experiencing what consequence of drug abuse?", options: {A: "Psychological consequence", B: "Physical health issue", C: "Economic benefit", D: "Social improvement"}, answer: "A"},
+{id: 279, question: "What is the typical duration for a detoxification process?", options: {A: "Seven (7) to Fourteen (14) days", B: "One to two hours", C: "Several months", D: "A full year"}, answer: "A"},
+{id: 280, question: "Factors that help to prevent or counteract drug abuse within communities are called:", options: {A: "Protective factors", B: "Trigger factors", C: "Demand factors", D: "Risk factors"}, answer: "A"},
+{id: 281, question: "Comprehensive drug education in schools and community settings primarily helps individuals to:", options: {A: "Make informed decisions about drug use", B: "Avoid school entirely", C: "Hide drug use from family", D: "Find cheaper drugs"}, answer: "A"},
+{id: 282, question: "Establishing clubs, sports, music groups and volunteer activities for young people is an example of:", options: {A: "Negative peer pressure", B: "A harm reduction programme", C: "A law enforcement operation", D: "Positive peer support that creates a supportive environment minimising drug abuse"}, answer: "D"},
+{id: 283, question: "Strengthening community ties and encouraging inclusive social networks, mentorship programmes and community events is an example of:", options: {A: "A supportive social structure", B: "Prosecution", C: "Border interdiction", D: "Asset forfeiture"}, answer: "A"},
+{id: 284, question: "Regulating drug-related advertisements helps to:", options: {A: "Promote drug sales", B: "Minimise the influence of advertising on drug abuse", C: "Make drugs more attractive", D: "Increase demand for drugs"}, answer: "B"},
+{id: 285, question: "Offering job training programmes, career counseling and community engagement opportunities helps to:", options: {A: "Increase unemployment", B: "Reduce community participation", C: "Make drugs cheaper", D: "Combat unemployment-related stress and prevent drug abuse"}, answer: "D"},
+{id: 286, question: "Teaching stress management techniques such as mindfulness, meditation and exercise can:", options: {A: "Worsen mental health", B: "Increase reliance on drugs", C: "Reduce reliance on drugs to cope with stress", D: "Have no effect on drug use"}, answer: "C"},
+{id: 287, question: "Teaching coping skills, resilience and emotional regulation empowers individuals to:", options: {A: "Ignore their emotions", B: "Avoid all social connections", C: "Handle life's challenges without turning to drugs", D: "Depend more on substances"}, answer: "C"},
+{id: 288, question: "Encouraging participation in sports, arts, music and other extracurricular activities provides:", options: {A: "A reason to skip school", B: "A healthy outlet for energy and creativity, reducing the risk of drug abuse", C: "More opportunities to buy drugs", D: "No benefit at all"}, answer: "B"},
+{id: 289, question: "Which traits are associated with a LOWER risk of drug abuse?", options: {A: "Impulsivity and low self-esteem", B: "High self-esteem, resilience and a strong sense of purpose", C: "Sensation-seeking and recklessness", D: "Hopelessness and isolation"}, answer: "B"},
+{id: 290, question: "Incorporating routine screening for substance use disorders into primary care settings helps to:", options: {A: "Increase drug supply", B: "Prevent substance abuse and enable early intervention for those at risk", C: "Hide drug problems", D: "Replace treatment entirely"}, answer: "B"},
+{id: 291, question: "Which of the following harm reduction services is mentioned as part of the way forward?", options: {A: "Needle Syringe Programs, Medication Assisted Treatment, Naloxone distribution and overdose prevention", B: "Reducing healthcare funding", C: "Increasing drug availability", D: "Banning all treatment"}, answer: "A"},
+{id: 292, question: "Fostering collaboration between primary care physicians, mental health professionals and addiction specialists to provide integrated care describes:", options: {A: "Asset forfeiture", B: "Roadblocks and checkpoints", C: "Border patrol", D: "Collaborative care"}, answer: "D"},
+{id: 293, question: "To promote mental health and trauma-informed care, the lesson recommends investing in:", options: {A: "Reducing all health budgets", B: "Banning counseling", C: "Training for healthcare providers, law enforcement officers and social service workers to recognise and address co-occurring mental health issues and trauma", D: "More prisons only"}, answer: "C"},
+{id: 294, question: "Supportive and drug-free family environments can:", options: {A: "Have no effect on drug abuse", B: "Increase the risk of drug abuse", C: "Significantly reduce the risk of drug abuse", D: "Encourage drug trafficking"}, answer: "C"},
+{id: 295, question: "Public awareness campaigns about the risks of drug abuse mainly help to:", options: {A: "Increase trafficking profits", B: "Discourage education", C: "Promote drug use", D: "Reduce ignorance about the risks of drug abuse"}, answer: "D"},
+{id: 296, question: "Employee Assistance Programs and promoting a healthy work-life balance are part of which protective measure?", options: {A: "Asset confiscation", B: "Border interdiction", C: "Workplace programmes", D: "Eradicating cannabis farms"}, answer: "C"},
+{id: 297, question: "Implementing strict regulations on drug availability and ensuring proper law enforcement helps to:", options: {A: "Limit access to drugs and reduce the risk of abuse", B: "Encourage misuse of prescriptions", C: "Make drugs easier to obtain", D: "Increase trafficking"}, answer: "A"},
+{id: 298, question: "A recommended way forward for addressing drug abuse is to:", options: {A: "Reduce treatment access", B: "Ignore the problem", C: "Develop and implement evidence-based drug policies focused on both prevention and treatment", D: "Stop all drug education"}, answer: "C"},
+{id: 299, question: "Establishing peer support programmes and recovery communities provides people with lived experience of addiction opportunities for:", options: {A: "Returning quickly to drug use", B: "Peer mentoring, support groups and social connection", C: "Avoiding all recovery activities", D: "Isolation from others"}, answer: "B"},
+{id: 300, question: "Life skills are also known as:", options: {A: "Hiding skills", B: "Trafficking skills", C: "Selling skills", D: "Coping skills"}, answer: "D"},
+{id: 301, question: "Which of the following best defines life skills?", options: {A: "Athletic abilities only", B: "Skills used only at the workplace", C: "Abilities that promote mental well-being and competence in young people as they face the realities of life", D: "Skills used to sell drugs"}, answer: "C"},
+{id: 302, question: "The art and process of exchanging knowledge, ideas, perspectives, information and thoughts in the best possible manner is:", options: {A: "Time management", B: "Resilience", C: "Communication skill", D: "Handling criticism"}, answer: "C"},
+{id: 303, question: "The ability to stand up for oneself and protect other people's rights in a positive and effective way - without aggression or insult - is:", options: {A: "Manipulation", B: "Aggression", C: "Assertiveness skill", D: "Passivity"}, answer: "C"},
+{id: 304, question: "The ability to withstand or recover quickly from difficulties is:", options: {A: "Empathy", B: "Time management", C: "Resilience", D: "Creative thinking"}, answer: "C"},
+{id: 305, question: "The ability to emotionally understand what other people feel, see things from their perspective and imagine being in their place is:", options: {A: "Time management", B: "Critical thinking", C: "Empathy", D: "Assertiveness"}, answer: "C"},
+{id: 306, question: "The ability to recognise your own feelings, behaviours and characteristics is:", options: {A: "Self-awareness", B: "Cooperation", C: "Flexibility", D: "Communication"}, answer: "A"},
+{id: 307, question: "The ability to manage your own emotions while understanding the emotions of people around you is:", options: {A: "Time management", B: "Emotional intelligence", C: "Handling criticism", D: "Assertiveness"}, answer: "B"},
+{id: 308, question: "The ability to use one's time effectively or productively, organising it intelligently, is:", options: {A: "Creative thinking", B: "Time management", C: "Empathy", D: "Resilience"}, answer: "B"},
+{id: 309, question: "The ability to come up with unique and original solutions and to think \"outside the box\" is:", options: {A: "Creative thinking", B: "Handling criticism", C: "Cooperation", D: "Assertiveness"}, answer: "A"},
+{id: 310, question: "The four components of creative thinking are:", options: {A: "Reading, writing, listening and speaking", B: "Planning, doing, checking and acting", C: "Speed, strength, stamina and balance", D: "Fluency, flexibility, elaboration and originality"}, answer: "D"},
+{id: 311, question: "A kind of thinking in which one questions, analyses, interprets, evaluates and makes a judgment about what one reads, hears, says or writes is:", options: {A: "Cooperation", B: "Critical thinking", C: "Time management", D: "Empathy"}, answer: "B"},
+{id: 312, question: "The act of defining a problem, determining its cause, identifying and selecting alternatives for a solution, and implementing that solution is:", options: {A: "Time management", B: "Problem solving", C: "Cooperation", D: "Handling criticism"}, answer: "B"},
+{id: 313, question: "The skill that teaches an individual to examine and assess the future consequences of present actions, and to determine alternative solutions, is:", options: {A: "Flexibility skill", B: "Handling criticism", C: "Decision-making skill", D: "Cooperation"}, answer: "C"},
+{id: 314, question: "The quality of bending easily without breaking, and the ability to change or be changed easily according to the situation, is:", options: {A: "Empathy", B: "Flexibility skill", C: "Resilience", D: "Assertiveness"}, answer: "B"},
+{id: 315, question: "Accepting constructive judgment about the negative or positive qualities of someone or something is the skill of:", options: {A: "Cooperation", B: "Handling criticism", C: "Creative thinking", D: "Time management"}, answer: "B"},
+{id: 316, question: "The ability to get along with others and work together for a common purpose or benefit is:", options: {A: "Assertiveness", B: "Cooperation", C: "Critical thinking", D: "Self-awareness"}, answer: "B"},
+{id: 317, question: "The ability to communicate and interact well with other people - including conflict management, teamwork and empathy - is:", options: {A: "Interpersonal skill", B: "Handling criticism", C: "Resilience", D: "Time management"}, answer: "A"},
+{id: 318, question: "How can assertiveness help someone resist drug use?", options: {A: "By forcing others to use drugs", B: "By avoiding all social situations", C: "By staying silent when offered drugs", D: "By letting them firmly decline an offer without giving in to social pressure"}, answer: "D"},
+{id: 319, question: "Reducing the negative impact caused by stress in order to improve a person's physical and mental wellbeing is:", options: {A: "Creative thinking", B: "Time management", C: "Handling criticism", D: "Stress management"}, answer: "D"},
+{id: 320, question: "Which of the following is a physical sign of drug abuse?", options: {A: "Needle marks on the skin", B: "Improved athletic performance", C: "Enhanced memory", D: "Better personal hygiene"}, answer: "A"},
+{id: 321, question: "What is a common behavioral symptom associated with drug abuse?", options: {A: "Secretiveness", B: "Increased honesty", C: "Better time management", D: "Improved relationships"}, answer: "A"},
+{id: 322, question: "Which of the following is a biological risk factor for drug abuse?", options: {A: "Genetics", B: "Peer pressure", C: "Unemployment", D: "Poverty"}, answer: "A"},
+{id: 323, question: "Individuals with which condition are at an increased risk of drug abuse as a form of self-medication?", options: {A: "Co-occurring mental health disorders", B: "Perfect physical health", C: "High socioeconomic status", D: "Strong family support"}, answer: "A"},
+{id: 324, question: "Which of the following is a long-term physical consequence of prolonged drug abuse?", options: {A: "Organ damage", B: "Temporary euphoria", C: "Improved coordination", D: "Weight gain"}, answer: "A"},
+{id: 325, question: "Which of the following is a social consequence of drug abuse?", options: {A: "Breakdown of relationships", B: "Stronger family bonds", C: "Increased social support", D: "Better job performance"}, answer: "A"},
+{id: 326, question: "What is the primary purpose of detoxification in a drug treatment program?", options: {A: "To manage withdrawal symptoms as the body rids itself of the drug", B: "To provide long-term psychological counseling", C: "To punish the individual for drug use", D: "To find employment for the individual"}, answer: "A"},
+{id: 327, question: "Which psychosocial intervention helps individuals identify and change harmful thought patterns related to substance use?", options: {A: "Cognitive Behavioral Therapy (CBT)", B: "Mutual Help Support", C: "Harm Reduction", D: "Pharmacotherapy"}, answer: "A"},
+{id: 328, question: "'Meth mouth' refers to which set of physical symptoms?", options: {A: "Mouth sores, gum disease, and tooth decay", B: "Improved sense of taste", C: "Whiter teeth and stronger gums", D: "Frequent nosebleeds"}, answer: "A"},
+{id: 329, question: "Which of the following is an environmental risk factor for drug abuse?", options: {A: "Easy availability of drugs", B: "Strong anti-drug laws", C: "Living in a drug-free community", D: "Having no family history of addiction"}, answer: "A"},
+{id: 330, question: "Which economic consequence is often associated with drug abuse?", options: {A: "Loss of income and employment", B: "Increased financial stability", C: "Better job opportunities", D: "Higher productivity"}, answer: "A"},
+{id: 331, question: "What is a key characteristic of Inpatient/Residential Treatment?", options: {A: "The individual lives at the treatment facility", B: "The individual attends therapy while living at home", C: "It is only available for a few hours a week", D: "It focuses solely on medication without therapy"}, answer: "A"},
+{id: 332, question: "Which of the following is a psychological consequence of drug abuse?", options: {A: "Paranoia and hallucinations", B: "Improved cognitive function", C: "Enhanced decision-making skills", D: "Increased happiness"}, answer: "A. PARANOIA AND HALLUCINATIONS"},
+{id: 333, question: "Which risk factor involves feeling pressured to conform to group norms regarding substance use?", options: {A: "Peer Influence", B: "Genetics", C: "Poverty", D: "Trauma"}, answer: "A"},
+{id: 334, question: "What is the main goal of Harm Reduction interventions?", options: {A: "To reduce the negative consequences associated with drug use", B: "To achieve immediate and complete abstinence", C: "To incarcerate drug users", D: "To punish drug dealers"}, answer: "A"},
+{id: 335, question: "Which of the following is a short-term effect of drug intoxication?", options: {A: "Impaired coordination", B: "Improved memory", C: "Enhanced senses", D: "Better reflexes"}, answer: "A"},
+{id: 336, question: "Which treatment setting is most suitable for individuals with jobs or extensive social supports?", options: {A: "Outpatient Treatment", B: "Inpatient/Residential Treatment", C: "Community Based Treatment", D: "Holistic Therapy"}, answer: "A"},
+{id: 337, question: "Which of the following is a sign of drug abuse related to the eyes?", options: {A: "Bloodshot eyes", B: "Improved vision", C: "Brighter eye color", D: "Better night vision"}, answer: "A"},
+{id: 338, question: "Unemployment can be a significant risk factor for drug abuse because it can lead to:", options: {A: "Financial strain and feelings of inadequacy", B: "Increased social status", C: "More disposable income", D: "Better time management skills"}, answer: "A"},
+{id: 339, question: "Which of the following is an example of a Mutual Help Support group?", options: {A: "Narcotics Anonymous (NA)", B: "Cognitive Behavioral Therapy (CBT) session", C: "A government-run detox center", D: "A private pharmacotherapy clinic"}, answer: "A"},
+{id: 340, question: "What is a common impact of drug abuse on academic performance?", options: {A: "Truancy and a drop in grades", B: "Improved concentration in class", C: "Better relationships with teachers", D: "Increased motivation to study"}, answer: "A"},
+{id: 341, question: "Which personality trait is associated with an increased likelihood of engaging in drug abuse?", options: {A: "Impulsivity", B: "Patience", C: "High self-esteem", D: "Risk aversion"}, answer: "A"},
+{id: 342, question: "Contingency Management (CM) is based on which behavioral principle?", options: {A: "Rewarding positive behavior reinforces it", B: "Punishing negative behavior eliminates it", C: "Ignoring behavior leads to its extinction", D: "All behavior is genetically determined"}, answer: "A"},
+{id: 343, question: "Which of the following is a harm reduction intervention for people who inject drugs?", options: {A: "Needle and Syringe Programme (NSP)", B: "Inpatient surgery", C: "Prescription glasses", D: "Dietary counseling"}, answer: "A"},
+{id: 344, question: "Which of the following is a sign of drug abuse related to financial issues?", options: {A: "Requests for money without reasonable explanation", B: "Increased savings", C: "Better financial planning", D: "Investing in stocks"}, answer: "A"},
+{id: 345, question: "The relationship between drug use and mental health is often described as:", options: {A: "A complex, vicious cycle", B: "A simple cause-and-effect relationship", C: "Completely unrelated", D: "Beneficial for mental health"}, answer: "A"},
+{id: 346, question: "Which treatment approach aims to look at the whole person, including physical, emotional, social, and spiritual wellbeing?", options: {A: "Holistic Therapies", B: "Pharmacotherapy", C: "Detoxification", D: "Brief Interventions"}, answer: "A"},
+{id: 347, question: "Which of the following is a long-term effect of drug abuse on the respiratory system?", options: {A: "Chronic cough and lung damage", B: "Improved lung capacity", C: "Better breathing", D: "Stronger respiratory muscles"}, answer: "A"},
+{id: 348, question: "A person showing \"psychotic and violent behaviour\" is likely experiencing what consequence of drug abuse?", options: {A: "Psychological consequence", B: "Physical health issue", C: "Economic benefit", D: "Social improvement"}, answer: "A"},
+{id: 349, question: "What is the typical duration for a detoxification process?", options: {A: "Seven (7) to Fourteen (14) days", B: "One to two hours", C: "Several months", D: "A full year"}, answer: "A"},
+{id: 350, question: "The National Drug Law Enforcement Agency (NDLEA) is the institution tasked with:", options: {A: "Producing prescription medicines", B: "Reducing the supply of and demand for narcotic drugs and psychotropic substances in Nigeria", C: "Collecting income tax", D: "Running primary schools"}, answer: "B"},
+{id: 351, question: "The NDLEA was established by:", options: {A: "The 1961 UN Single Convention", B: "Decree 48 of 1989 (now the NDLEA Act CAP N30 LFN)", C: "A 2010 executive order", D: "The 1999 Constitution"}, answer: "B"},
+{id: 352, question: "The NDLEA operates under which Federal Ministry?", options: {A: "The Federal Ministry of Health", B: "The Federal Ministry of Justice", C: "The Federal Ministry of Finance", D: "The Federal Ministry of Education"}, answer: "B"},
+{id: 353, question: "The NDLEA is headed by a:", options: {A: "Permanent Secretary", B: "Chairman/Chief Executive Officer", C: "Inspector-General", D: "Director of Public Prosecutions"}, answer: "B"},
+{id: 354, question: "The present Chairman/Chief Executive Officer of the NDLEA is:", options: {A: "Brig. Gen. Buba Mohamed Marwa (OFR, CON)", B: "President Muhammadu Buhari", C: "The UNODC Director", D: "The Minister of Health"}, answer: "A"},
+{id: 355, question: "How many Zonal Commands does the NDLEA have?", options: {A: "14", B: "18", C: "36", D: "37"}, answer: "A"},
+{id: 356, question: "How many State Commands does the NDLEA have, covering the 36 states of Nigeria plus the FCT?", options: {A: "18", B: "37", C: "14", D: "30"}, answer: "B"},
+{id: 357, question: "The 13 NDLEA Special Area Commands are strategically placed at:", options: {A: "All entry points - land borders, airports and seaports - nationwide", B: "Only in Abuja", C: "Only in northern Nigeria", D: "Only at universities"}, answer: "A"},
+{id: 358, question: "The 2018 National Drug Use Survey in Nigeria was conducted by:", options: {A: "NAFDAC alone", B: "The World Bank", C: "The World Trade Organization", D: "The United Nations Office on Drugs and Crime (UNODC)"}, answer: "D"},
+{id: 359, question: "According to the 2018 survey, about how many people in Nigeria aged 15-64 had used psychoactive substances other than alcohol and tobacco?", options: {A: "143 million", B: "430 thousand", C: "1.4 million", D: "14.3 million"}, answer: "D"},
+{id: 360, question: "The 2018 survey found that among every four drug users in Nigeria, one is:", options: {A: "A child under 10", B: "A retiree", C: "A foreigner", D: "A female"}, answer: "D"},
+{id: 361, question: "According to the lesson, the most common drug of use in Nigeria is:", options: {A: "Cannabis sativa", B: "LSD", C: "Heroin", D: "Cocaine"}, answer: "A"},
+{id: 362, question: "In line with global best practice, the NDLEA employs a balanced approach to drug control involving:", options: {A: "Only public lectures", B: "Demand reduction and supply reduction", C: "Only importing medicines", D: "Only arrests"}, answer: "B"},
+{id: 363, question: "In drug control, \"WADA\" stands for:", options: {A: "West African Drug Authority", B: "Workers Against Dangerous Acts", C: "World Anti-Doping Agency", D: "War Against Drug Abuse"}, answer: "D"},
+{id: 364, question: "The War Against Drug Abuse (WADA) Initiative was launched on:", options: {A: "12th June 1993", B: "1st October 1960", C: "29th May 1999", D: "26th June 2021"}, answer: "D"},
+{id: 365, question: "The War Against Drug Abuse (WADA) Initiative was launched by:", options: {A: "The UNODC Director", B: "The State Governors only", C: "Former President Muhammadu Buhari", D: "The Minister of Education"}, answer: "C"},
+{id: 366, question: "The vision of WADA is to have a nation devoid of drug abuse and its consequences by the year:", options: {A: "2040", B: "2030", C: "2025", D: "2050"}, answer: "B"},
+{id: 367, question: "War Against Drug Abuse (WADA) Clubs in schools aim to:", options: {A: "Recruit students into the military", B: "Sell drugs to students", C: "Replace school examinations", D: "Raise peer educators and peer counsellors among youths to effect change among their peers as role models"}, answer: "D"},
+{id: 368, question: "The NDLEA has how many Counselling and Rehabilitation Centres across the country?", options: {A: "30", B: "37", C: "14", D: "13"}, answer: "B"},
+{id: 369, question: "The Save Our Families (SOF) Initiative, launched on 26th June 2024, is aimed at:", options: {A: "Increasing penalties for school absence", B: "Encouraging families to conduct intermittent drug testing on their children and wards for early detection and intervention", C: "Banning all medicines", D: "Closing rehabilitation centres"}, answer: "B"},
+{id: 370, question: "The National Drug Control Master Plan (NDCMP) is best described as:", options: {A: "A list of approved medicines", B: "A textbook for medical students", C: "A treaty signed only by the United Nations", D: "A policy/framework document that identifies national priorities, actions and strategies for drug control"}, answer: "D"},
+{id: 371, question: "The NDCMP recommends a balanced approach of:", options: {A: "Arrests and imprisonment only", B: "Demand reduction only", C: "Demand reduction, supply reduction and harm reduction", D: "Supply reduction only"}, answer: "C"},
+{id: 372, question: "The overall goal of the NDCMP 2021–2025 is to:", options: {A: "Privatise all hospitals", B: "Reduce school enrolment", C: "Improve health and security for everyone living in Nigeria", D: "Increase drug exports"}, answer: "C"},
+{id: 373, question: "How many strategic pillars does the NDCMP contain?", options: {A: "Three", B: "Five", C: "Two", D: "Four"}, answer: "D"},
+{id: 374, question: "Which of the following is one of the four strategic pillars of the NDCMP?", options: {A: "Supply Reduction", B: "Tourism Promotion", C: "Agricultural Subsidy", D: "Currency Stabilisation"}, answer: "A"},
+{id: 375, question: "The lead Agency for the Supply Reduction pillar of the NDCMP is:", options: {A: "NAFDAC", B: "NACA", C: "NDLEA", D: "The Federal Ministry of Education"}, answer: "C"},
+{id: 376, question: "Which of the following is a desired outcome of the Supply Reduction pillar?", options: {A: "Increased disruption of drug trafficking and making the drug trade unprofitable", B: "Higher drug profits", C: "More cannabis cultivation", D: "Easier drug importation"}, answer: "A"},
+{id: 377, question: "The Drug Demand Reduction pillar focuses on which strategies?", options: {A: "Asset forfeiture only", B: "Border interdiction only", C: "Importing controlled medicines only", D: "Prevention, education, treatment and rehabilitation"}, answer: "D"},
+{id: 378, question: "The lead Agencies for the Drug Demand Reduction pillar include:", options: {A: "Only the army", B: "Only the Federal Ministry of Education", C: "NDLEA, FMOH, NAFDAC and NACA", D: "Only the police"}, answer: "C"},
+{id: 379, question: "The \"Access to Controlled Medicines for Medical and Scientific Purposes\" pillar arose because stakeholders noted:", options: {A: "That there were too many medicines", B: "That medicines were too cheap", C: "The unavailability of controlled medicines for genuine patients and its severe impact on Nigerians health", D: "That no one needed pain relief"}, answer: "C"},
+{id: 380, question: "The lead organisations for the Access to Controlled Medicines pillar are:", options: {A: "The army and the navy", B: "NDLEA and the police", C: "The Federal Ministry of Health (FMOH) and NAFDAC", D: "The Ministry of Education and NACA"}, answer: "C"},
+{id: 381, question: "The Governance and Coordination pillar of the NDCMP is currently overseen by:", options: {A: "The United Nations directly", B: "The Inter-Ministerial Committee (IMC), headed by the Chairman/CEO of NDLEA", C: "The State Governors only", D: "The Federal High Court"}, answer: "B"},
+{id: 382, question: "Which agencies were involved in developing the NDCMP?", options: {A: "Only foreign organisations", B: "Only NDLEA", C: "Only NAFDAC", D: "NDLEA, FMOH, FMOE, NAFDAC and NACA"}, answer: "D"},
+{id: 383, question: "Which of the following is an expected outcome of the Governance and Coordination pillar?", options: {A: "Reduced funding for monitoring", B: "Fewer treatment centres", C: "Increased drug trafficking", D: "Results-focused partnership, leadership and ownership, and effective communication and advocacy of the plan"}, answer: "D"},
+{id: 384, question: "The NDCMP is based on the premise that problems arising from drug supply and consumption:", options: {A: "Are not a public concern", B: "Are not limited to people who use drugs but have wider health, social and economic consequences on family, community and nation", C: "Have no economic effect", D: "Affect only the individual user"}, answer: "B"},
+{id: 385, question: "Reduced diversion from licit to illicit uses of narcotics, psychotropic substances and precursors is an outcome of which NDCMP pillar?", options: {A: "Governance and Coordination", B: "Access to Controlled Medicines", C: "Drug Demand Reduction", D: "Supply Reduction"}, answer: "D"},
+{id: 386, question: "\"Reduced use of drugs, reduced dependence on drugs, reduced harm caused by drug use, and improved services\" are the desired outcomes of which NDCMP pillar?", options: {A: "Supply Reduction", B: "Drug Demand Reduction", C: "Governance and Coordination", D: "Access to Controlled Medicines"}, answer: "B"},
+{id: 387, question: "The NDCMP is described overall as:", options: {A: "A multi-sector approach to addressing drug abuse and illicit drug trafficking in the country", B: "A purely military operation", C: "A school curriculum", D: "A trade agreement"}, answer: "A"},
+{id: 388, question: "Each strategic pillar of the NDCMP is anchored on:", options: {A: "Private companies only", B: "The United Nations alone", C: "No particular body", D: "One or two MDAs responsible for achieving the desired outcomes"}, answer: "D"},
+{id: 389, question: "Which of the following is NOT one of the four NDCMP strategic pillars?", options: {A: "Governance and Coordination", B: "Tourism and Hospitality Development", C: "Drug Demand Reduction", D: "Supply Reduction"}, answer: "B"},
+{id: 390, question: "The NDLEA works with international organisations as part of its strategy to achieve:", options: {A: "More drug trafficking routes", B: "Higher drug prices", C: "A drug-free society", D: "Reduced healthcare access"}, answer: "C"},
+{id: 391, question: "Which organisation provides support to countries on trafficking, organised crime, corruption and drug abuse, and helps strengthen criminal justice systems and promote prevention and treatment?", options: {A: "The World Trade Organization", B: "NAFDAC", C: "UNODC", D: "FIFA"}, answer: "C"},
+{id: 392, question: "\"UNODC\" stands for:", options: {A: "United Nations Office for Disease Control", B: "United Nations Office on Drugs and Crime", C: "Union of National Officers on Drug Cases", D: "United Nigerian Organisation for Drug Control"}, answer: "B"},
+{id: 393, question: "The Bureau of International Narcotics and Law Enforcement Affairs (INL) develops and implements:", options: {A: "United Nations peacekeeping missions", B: "World Bank loans", C: "Nigerian school curricula", D: "United States foreign assistance programmes aimed at combating transnational crime including drug trafficking and promoting the rule of law"}, answer: "D"},
+{id: 394, question: "Which organisation sets international standards for controlled substances, provides guidance on drug policies, and promotes scientific research on drug abuse and addiction?", options: {A: "The African Union", B: "NACA", C: "The World Health Organization (WHO)", D: "INTERPOL"}, answer: "C"},
+{id: 395, question: "Which organisation monitors the implementation of international drug control treaties, assesses the global drug situation, and promotes compliance with drug conventions?", options: {A: "UNAIDS", B: "The International Narcotics Control Board (INCB)", C: "The Federal Ministry of Health", D: "ISSUP"}, answer: "B"},
+{id: 396, question: "\"INCB\" stands for:", options: {A: "International Narcotics Control Board", B: "Interagency Nigerian Control Bureau", C: "International Network for Crime and Banditry", D: "International Narcotics Cooperation Body"}, answer: "A"},
+{id: 397, question: "The \"Access to Controlled Medicines for Medical and Scientific Purposes\" pillar arose because stakeholders noted:", options: {A: "That there were too many medicines", B: "That medicines were too cheap", C: "The unavailability of controlled medicines for genuine patients and its severe impact on Nigerians health", D: "That no one needed pain relief"}, answer: "C"},
+{id: 398, question: "The lead organisations for the Access to Controlled Medicines pillar are:", options: {A: "The army and the navy", B: "NDLEA and the police", C: "The Federal Ministry of Health (FMOH) and NAFDAC", D: "The Ministry of Education and NACA"}, answer: "C"},
+{id: 399, question: "The Governance and Coordination pillar of the NDCMP is currently overseen by:", options: {A: "The United Nations directly", B: "The Inter-Ministerial Committee (IMC), headed by the Chairman/CEO of NDLEA", C: "The State Governors only", D: "The Federal High Court"}, answer: "B"},
+{id: 400, question: "Which agencies were involved in developing the NDCMP?", options: {A: "Only foreign organisations", B: "Only NDLEA", C: "Only NAFDAC", D: "NDLEA, FMOH, FMOE, NAFDAC and NACA"}, answer: "D"},
+{id: 401, question: "Which of the following is an expected outcome of the Governance and Coordination pillar?", options: {A: "Reduced funding for monitoring", B: "Fewer treatment centres", C: "Increased drug trafficking", D: "Results-focused partnership, leadership and ownership, and effective communication and advocacy of the plan"}, answer: "D"},
+{id: 402, question: "The NDCMP is based on the premise that problems arising from drug supply and consumption:", options: {A: "Are not a public concern", B: "Are not limited to people who use drugs but have wider health, social and economic consequences on family, community and nation", C: "Have no economic effect", D: "Affect only the individual user"}, answer: "B"},
+{id: 403, question: "Reduced diversion from licit to illicit uses of narcotics, psychotropic substances and precursors is an outcome of which NDCMP pillar?", options: {A: "Governance and Coordination", B: "Access to Controlled Medicines", C: "Drug Demand Reduction", D: "Supply Reduction"}, answer: "D"},
+{id: 404, question: "\"Reduced use of drugs, reduced dependence on drugs, reduced harm caused by drug use, and improved services\" are the desired outcomes of which NDCMP pillar?", options: {A: "Supply Reduction", B: "Drug Demand Reduction", C: "Governance and Coordination", D: "Access to Controlled Medicines"}, answer: "B"},
+{id: 405, question: "The NDCMP is described overall as:", options: {A: "A multi-sector approach to addressing drug abuse and illicit drug trafficking in the country", B: "A purely military operation", C: "A school curriculum", D: "A trade agreement"}, answer: "A"},
+{id: 406, question: "Each strategic pillar of the NDCMP is anchored on:", options: {A: "Private companies only", B: "The United Nations alone", C: "No particular body", D: "One or two MDAs responsible for achieving the desired outcomes"}, answer: "D"},
+{id: 407, question: "Which of the following is NOT one of the four NDCMP strategic pillars?", options: {A: "Governance and Coordination", B: "Tourism and Hospitality Development", C: "Drug Demand Reduction", D: "Supply Reduction"}, answer: "B"},
+{id: 408, question: "The NDLEA works with international organisations as part of its strategy to achieve:", options: {A: "More drug trafficking routes", B: "Higher drug prices", C: "A drug-free society", D: "Reduced healthcare access"}, answer: "C"},
+{id: 409, question: "Which organisation provides support to countries on trafficking, organised crime, corruption and drug abuse, and helps strengthen criminal justice systems and promote prevention and treatment?", options: {A: "The World Trade Organization", B: "NAFDAC", C: "UNODC", D: "FIFA"}, answer: "C"},
+{id: 410, question: "\"UNODC\" stands for:", options: {A: "United Nations Office for Disease Control", B: "United Nations Office on Drugs and Crime", C: "Union of National Officers on Drug Cases", D: "United Nigerian Organisation for Drug Control"}, answer: "B"},
+{id: 411, question: "The Bureau of International Narcotics and Law Enforcement Affairs (INL) develops and implements:", options: {A: "United Nations peacekeeping missions", B: "World Bank loans", C: "Nigerian school curricula", D: "United States foreign assistance programmes aimed at combating transnational crime including drug trafficking and promoting the rule of law"}, answer: "D"},
+{id: 412, question: "Which organisation sets international standards for controlled substances, provides guidance on drug policies, and promotes scientific research on drug abuse and addiction?", options: {A: "The African Union", B: "NACA", C: "The World Health Organization (WHO)", D: "INTERPOL"}, answer: "C"},
+{id: 413, question: "Which organisation monitors the implementation of international drug control treaties, assesses the global drug situation, and promotes compliance with drug conventions?", options: {A: "UNAIDS", B: "The International Narcotics Control Board (INCB)", C: "The Federal Ministry of Health", D: "ISSUP"}, answer: "B"},
+{id: 414, question: "\"INCB\" stands for:", options: {A: "International Narcotics Control Board", B: "Interagency Nigerian Control Bureau", C: "International Network for Crime and Banditry", D: "International Narcotics Cooperation Body"}, answer: "A"},
+{id: 415, question: "Which organisation focuses on preventing the spread of HIV/AIDS among drug users, addressing stigma and discrimination, and promoting access to HIV prevention and treatment?", options: {A: "INCB", B: "INL", C: "WHO", D: "Joint United Nations Programme on HIV/AIDS (UNAIDS)"}, answer: "D"},
+{id: 416, question: "Which organisation provides training, resources and networking opportunities for substance use professionals?", options: {A: "International Society of Substance Use Professionals (ISSUP)", B: "UNAIDS", C: "The World Bank", D: "INCB"}, answer: "A"},
+{id: 417, question: "\"ISSUP\" stands for:", options: {A: "International Survey of Student Use Patterns", B: "Internal Security Service for Underground Policing", C: "International Society of Substance Use Professionals", D: "International Standards for Substance Use Programmes"}, answer: "C"},
+{id: 418, question: "Which organisation coordinates international efforts on drug-related issues including policy development, capacity building and advocacy for drug control measures?", options: {A: "A private NGO only", B: "The Nigerian Bar Association", C: "The United Nations (UN)", D: "The Economic Community of West African States only"}, answer: "C"},
+{id: 419, question: "The WHO supports member countries in drug control by:", options: {A: "Funding drug traffickers", B: "Importing illicit drugs", C: "Running national police forces", D: "Setting standards for controlled substances, promoting scientific research on drug abuse, and providing policy guidance"}, answer: "D"},
+{id: 420, question: "The INCB primarily promotes:", options: {A: "Increased drug production", B: "Reduced international cooperation", C: "Compliance with the provisions of international drug conventions", D: "Drug legalisation worldwide"}, answer: "C"},
+{id: 421, question: "In addition to HIV prevention among drug users, UNAIDS also works on:", options: {A: "Prosecuting drug traffickers", B: "Border interdiction operations", C: "Addressing stigma and discrimination and promoting access to HIV prevention and treatment services", D: "Eradicating cannabis farms"}, answer: "C"},
+{id: 422, question: "Which statement about international organisations involved in drug control is TRUE?", options: {A: "They have no effect on national drug policy", B: "They oppose all drug treatment", C: "They play crucial roles in advancing global efforts to control and address drug-related challenges", D: "They only work in Europe"}, answer: "C"},
+{id: 423, question: "2. Which organisation develops and implements United States foreign assistance programmes to promote the rule of law and combat drug trafficking?", options: {A: "The Bureau of International Narcotics and Law Enforcement Affairs (INL)", B: "ISSUP", C: "UNAIDS", D: "WHO"}, answer: "A"},
+{id: 424, question: "3. UNODC works with countries to promote:", options: {A: "Reduced funding for treatment", B: "More porous borders", C: "Drug prevention and treatment programmes and stronger criminal justice systems", D: "Easier drug trafficking"}, answer: "C"},
+{id: 425, question: "4. Which body monitors compliance with treaty obligations and provides recommendations for improving drug control policies and practices?", options: {A: "The African Development Bank", B: "The International Narcotics Control Board (INCB)", C: "The World Trade Organization", D: "ISSUP"}, answer: "B"},
+{id: 426, question: "5. ISSUP works mainly to improve:", options: {A: "Border smuggling routes", B: "The price of illicit drugs", C: "The profitability of drug cartels", D: "The quality and effectiveness of prevention, treatment and recovery services"}, answer: "D"},
+{id: 427, question: "6. Which of the following is NOT listed as an international organisation involved in drug control?", options: {A: "The World Trade Organization (WTO)", B: "INCB", C: "WHO", D: "UNODC"}, answer: "A"},
+{id: 428, question: "7. The FIRST international treaty to control drug trafficking and abuse was the:", options: {A: "United Nations Convention Against Illicit Traffic in Narcotic Drugs and Psychotropic Substances (1988)", B: "United Nations Convention on Psychotropic Substances (1971)", C: "United Nations Single Convention on Narcotic Drugs (1961)", D: "The NDLEA Act of 1989"}, answer: "C"},
+{id: 429, question: "8. The 1961 Single Convention on Narcotic Drugs established control on:", options: {A: "Opium, coca and cannabis as well as their derivatives", B: "Antibiotics and vaccines", C: "Caffeine and sugar", D: "Alcohol and tobacco only"}, answer: "A"},
+{id: 430, question: "9. The convention that responds to the emergence of new psychoactive substances, including synthetic drugs and their precursors, is the:", options: {A: "United Nations Convention on Psychotropic Substances (1971)", B: "United Nations Convention Against Illicit Traffic (1988)", C: "United Nations Single Convention on Narcotic Drugs (1961)", D: "The 1920 standard provisions"}, answer: "A"},
+{id: 431, question: "10. The 1971 Convention on Psychotropic Substances established schedules for psychotropic substances based on:", options: {A: "Their street price", B: "Their medicinal use and potential for abuse", C: "Their colour and packaging", D: "Their country of manufacture"}, answer: "B"},
+{id: 432, question: "11. The convention that focused on strengthening international cooperation to combat drug trafficking—covering extradition, controlled deliveries, mutual legal assistance and law enforcement cooperation—is the:", options: {A: "The 1998 UN General Assembly declaration", B: "United Nations Convention Against Illicit Traffic in Narcotic Drugs and Psychotropic Substances (1988)", C: "United Nations Single Convention on Narcotic Drugs (1961)", D: "United Nations Convention on Psychotropic Substances (1971)"}, answer: "B"},
+{id: 433, question: "12. In addition to law enforcement cooperation, the 1988 Convention also addressed:", options: {A: "Agricultural subsidies", B: "Money laundering, precursor chemical control and asset forfeiture", C: "Tourism promotion", D: "School curricula"}, answer: "B"},
+{id: 434, question: "13. The 1961 Single Convention classified controlled substances according to:", options: {A: "Their popularity among users", B: "The size of their packaging", C: "The wealth of their producers", D: "Their medicinal value and potential for abuse"}, answer: "D"},
+{id: 435, question: "14. International conventions on drug control are forged through:", options: {A: "Unilateral decisions by one country", B: "Decisions of drug cartels", C: "Court judgments only", D: "International cooperation and consensus"}, answer: "D"},
+{id: 436, question: "15. Forms of international cooperation under these conventions include:", options: {A: "Eliminating all law enforcement", B: "Mutual exchange of intelligence, joint operations, and capacity building and technical/logistic assistance", C: "Closing all borders permanently", D: "Refusing to share any information"}, answer: "B"},
+{id: 437, question: "16. A key importance of international conventions is that they establish legal frameworks that define:", options: {A: "The retail price of drugs", B: "School holiday dates", C: "The responsibilities of member states in combating drug trafficking, abuse and related criminal activities", D: "Football competition rules"}, answer: "C"},
+{id: 438, question: "17. Conventions also establish global standards for the regulation of:", options: {A: "Airline routes", B: "Narcotics, psychotropic substances and precursor chemicals", C: "Foreign exchange rates", D: "Mobile phone networks"}, answer: "B"},
+{id: 439, question: "18. Which body monitors compliance with treaty obligations under the international drug conventions?", options: {A: "The African Union Commission", B: "The International Narcotics Control Board (INCB)", C: "The World Trade Organization", D: "The Nigerian Bar Association"}, answer: "B"},
+{id: 440, question: "19. Article 14 of the 1988 Convention strongly emphasises:", options: {A: "Increasing drug production", B: "Cooperation among the various countries of the world in the control of drug production, distribution and consumption", C: "Closing all rehabilitation centres", D: "Ending international trade"}, answer: "B"},
+{id: 441, question: "With respect to UN conventions against illicit drugs and psychotropic substances, Nigeria has:", options: {A: "Acceded to all of them", B: "Never been involved in any of them", C: "Acceded to only one of them", D: "Rejected all of them"}, answer: "A"},
+{id: 442, question: "2. The \"normative influence\" of international conventions promotes shared values such as:", options: {A: "Protection of public health, human rights and the rule of law", B: "Encouraging trafficking", C: "Maximising drug company profits", D: "Reducing public health funding"}, answer: "A"},
+{id: 443, question: "3. Which of the following is listed among the importance of international conventions on drug control?", options: {A: "Increasing drug availability", B: "Eliminating treatment programmes", C: "Providing a platform for dialogue and cooperation among governments, civil society and other stakeholders", D: "Reducing border cooperation"}, answer: "C"},
+{id: 444, question: "4. The 1988 Convention outlined measures for the extradition of:", options: {A: "Schoolteachers", B: "Drug traffickers", C: "Sports officials", D: "Medical doctors"}, answer: "B"},
+{id: 445, question: "5. To achieve the best results in the fight against drugs, the lesson stresses that it is necessary to maintain:", options: {A: "A balanced and integrated approach in allocating resources to reduce both illicit drug demand and supply", B: "No allocation of resources at all", C: "A focus on supply reduction only", D: "A focus on demand reduction only"}, answer: "A"},
+{id: 446, question: "6. Capacity-building support under these treaties helps countries to:", options: {A: "Reduce cooperation with neighbours", B: "Increase drug cultivation", C: "Stop monitoring drug trends", D: "Strengthen their drug control infrastructure, including law enforcement, judicial systems and drug treatment programmes"}, answer: "D"},
+{id: 447, question: "7. Which of the three main UN drug conventions came FIRST chronologically?", options: {A: "The 1961 Single Convention on Narcotic Drugs", B: "They were all signed in the same year", C: "The 1971 Convention on Psychotropic Substances", D: "The 1988 Convention Against Illicit Traffic"}, answer: "A"}        
+];
+
+        // State variables
+        let currentTest = [];
+        let currentQuestionIndex = 0;
+        let answers = {};
+        let timerInterval = null;
+        let timeRemaining = TEST_DURATION_SECONDS;
+        let testStartTime = null;
+        let currentStudentName = '';
+
+        // Shuffle array function
+        function shuffleArray(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // Prepare a new test pool and shuffle options for each question
+        let preparedTest = [];
+        function prepareNewTest(questionCount = 100) {
+            const pool = shuffleArray(allQuestions);
+            const selected = pool.slice(0, Math.min(questionCount, pool.length));
+            preparedTest = selected.map(q => {
+                // create shuffled options array while preserving original keys
+                const opts = Object.entries(q.options).map(([k, v]) => ({ key: k, text: v, isAnswer: k === q.answer }));
+                const shuffledOpts = shuffleArray(opts);
+                return { ...q, shuffledOptions: shuffledOpts };
+            });
+        }
+
+        // Start test with prepared questions
+        function startTest(questionCount = 100) {
+            const nameInput = document.getElementById('studentNameMain');
+            const nameError = document.getElementById('nameError');
+            const nameValue = nameInput.value.trim();
+
+            if (!nameValue) {
+                nameError.textContent = 'Please enter your full name before starting the test.';
+                nameError.style.display = 'block';
+                return;
+            }
+            nameError.style.display = 'none';
+
+            currentStudentName = nameValue;
+
+            // ensure preparedTest is ready and matches requested count
+            prepareNewTest(questionCount);
+            currentTest = preparedTest;
+            currentQuestionIndex = 0;
+            answers = {};
+            timeRemaining = TEST_DURATION_SECONDS;
+            testStartTime = new Date();
+
+            document.getElementById('mainScreen').style.display = 'none';
+            document.getElementById('resultsScreen').style.display = 'none';
+            document.getElementById('testScreen').style.display = 'block';
+            document.getElementById('reviewSection').style.display = 'none';
+            document.getElementById('reviewContent').innerHTML = '';
+
+            startTimer();
+            displayQuestion();
+        }
+
+        // Timer functionality
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                updateTimerDisplay();
+
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    submitTest();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            const timerBox = document.getElementById('timerBox');
+            timerBox.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+            // Change color when time is running out
+            if (timeRemaining <= 300) {
+                timerBox.classList.add('critical');
+                timerBox.classList.remove('warning');
+            } else if (timeRemaining <= 600) {
+                timerBox.classList.add('warning');
+                timerBox.classList.remove('critical');
+            } else {
+                timerBox.classList.remove('warning', 'critical');
+            }
+        }
+
+        // Display current question
+        function displayQuestion() {
+            const question = currentTest[currentQuestionIndex];
+            const total = currentTest.length;
+
+            document.getElementById('questionNumber').textContent = currentQuestionIndex + 1;
+            document.getElementById('answeredCount').textContent = Object.keys(answers).length;
+            document.getElementById('remainingCount').textContent = total - Object.keys(answers).length;
+            document.getElementById('testTitle').textContent = `Question ${currentQuestionIndex + 1} of ${total}`;
+            document.getElementById('questionNumberDisplay').textContent = `Question ${currentQuestionIndex + 1} of ${total}`;
+            document.getElementById('questionTitle').textContent = question.question;
+
+            const optionsHtml = question.shuffledOptions.map(opt => `
+                <label class="answer-option">
+                    <input type="radio" name="answer" value="${opt.key}" 
+                           ${answers[currentQuestionIndex] === opt.key ? 'checked' : ''}>
+                    <span class="answer-label">${opt.key}</span>
+                    <span class="answer-text">${opt.text}</span>
+                </label>
+            `).join('');
+
+            document.getElementById('answerOptions').innerHTML = optionsHtml;
+
+            // Add event listeners
+            document.querySelectorAll('input[name="answer"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    answers[currentQuestionIndex] = e.target.value;
+                    document.querySelectorAll('.answer-option').forEach(opt => opt.classList.remove('selected'));
+                    e.target.parentElement.classList.add('selected');
+                    renderQuestionPalette();
+                });
+            });
+
+            // Update progress bar
+            const progress = ((currentQuestionIndex + 1) / total) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+
+            // Update button states
+            document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
+
+            // Highlight selected answer
+            if (answers[currentQuestionIndex]) {
+                const selected = document.querySelector(`input[value="${answers[currentQuestionIndex]}"]`);
+                if (selected) {
+                    selected.parentElement.classList.add('selected');
+                }
+            }
+
+            renderQuestionPalette();
+        }
+
+        // Navigation
+        function nextQuestion() {
+            if (currentQuestionIndex < currentTest.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion();
+            }
+        }
+
+        function goToQuestion(index) {
+            if (index >= 0 && index < currentTest.length) {
+                currentQuestionIndex = index;
+                displayQuestion();
+            }
+        }
+
+        function renderQuestionPalette() {
+            const palette = document.getElementById('questionPalette');
+            if (!currentTest || currentTest.length === 0) {
+                palette.innerHTML = '';
+                return;
+            }
+
+            const items = currentTest.map((_, idx) => {
+                const answered = answers.hasOwnProperty(idx);
+                const classes = ['question-pill'];
+                if (idx === currentQuestionIndex) classes.push('current');
+                if (answered) classes.push('answered');
+                else classes.push('unanswered');
+                return `<div class="${classes.join(' ')}" onclick="goToQuestion(${idx})">${idx + 1}</div>`;
+            });
+
+            palette.innerHTML = items.join('');
+        }
+
+        // Submit test
+        function submitTest() {
+            if (timerInterval) clearInterval(timerInterval);
+
+            let correct = 0;
+            let incorrect = 0;
+            let unanswered = currentTest.length - Object.keys(answers).length;
+
+            currentTest.forEach((question, index) => {
+                if (answers[index] === question.answer) {
+                    correct++;
+                } else if (answers[index]) {
+                    incorrect++;
+                }
+            });
+
+            const percentage = Math.round((correct / currentTest.length) * 100);
+
+            // Display results
+            document.getElementById('testScreen').style.display = 'none';
+            document.getElementById('resultsScreen').style.display = 'block';
+
+            document.getElementById('scorePercent').textContent = percentage + '%';
+            document.getElementById('correctCount').textContent = correct;
+            document.getElementById('incorrectCount').textContent = incorrect;
+            document.getElementById('unansweredCount').textContent = unanswered;
+            document.getElementById('resultSummary').textContent = `${correct} out of ${currentTest.length}`;
+
+            // Performance message
+            const perfMsg = document.getElementById('performanceMessage');
+            if (percentage >= 80) {
+                perfMsg.textContent = '🌟 Excellent Performance!';
+                perfMsg.className = 'performance-message excellent';
+            } else if (percentage >= 60) {
+                perfMsg.textContent = '✓ Good Performance!';
+                perfMsg.className = 'performance-message good';
+            } else {
+                perfMsg.textContent = '📚 Keep Studying!';
+                perfMsg.className = 'performance-message needs-improvement';
+            }
+
+            if (!currentStudentName) {
+                currentStudentName = document.getElementById('studentNameMain').value.trim();
+            }
+
+            if (!currentStudentName) {
+                alert('Please enter your name before starting the test.');
+                backToHome();
+                return;
+            }
+
+            saveResultToDB(currentStudentName, percentage, correct, incorrect, unanswered, currentTest.length)
+                .then(result => {
+                    console.log('✅ Result saved automatically:', result);
+                })
+                .catch(err => {
+                    console.error('❌ Failed to save result:', err);
+                });
+        }
+
+        function showReviewAnswers() {
+            const reviewSection = document.getElementById('reviewSection');
+            const reviewContent = document.getElementById('reviewContent');
+
+            if (!currentTest || currentTest.length === 0) {
+                reviewContent.innerHTML = '<p style="color: #333;">No test data available for review.</p>';
+                reviewSection.style.display = 'block';
+                return;
+            }
+
+            const reviewHtml = currentTest.map((question, idx) => {
+                const selectedAnswer = answers[idx] || 'No answer';
+                const selectedText = selectedAnswer === 'No answer'
+                    ? 'No answer selected'
+                    : question.shuffledOptions.find(opt => opt.key === selectedAnswer)?.text || 'Unknown';
+                const correctText = question.shuffledOptions.find(opt => opt.key === question.answer)?.text || question.options[question.answer];
+                const isCorrect = selectedAnswer === question.answer;
+
+                return `
+                    <div style="margin-bottom: 18px; padding: 16px; border-radius: 12px; background: #ffffff; border: 1px solid #e2e3e5;">
+                        <div style="font-weight: 700; margin-bottom: 8px; color: #2b2b2b;">${idx + 1}. ${question.question}</div>
+                        <div style="margin-bottom: 6px;"><strong>Your answer:</strong> ${selectedAnswer === 'No answer' ? '<span style="color:#dc3545;">No answer</span>' : `<span style="color:${isCorrect ? '#28a745' : '#dc3545'};">${selectedAnswer}. ${selectedText}</span>`}</div>
+                        <div><strong>Correct answer:</strong> <span style="color:#28a745;">${question.answer}. ${correctText}</span></div>
+                    </div>
+                `;
+            }).join('');
+
+            reviewContent.innerHTML = reviewHtml;
+            reviewSection.style.display = 'block';
+            document.getElementById('resultsScreen').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Back to home
+        function backToHome() {
+            document.getElementById('testScreen').style.display = 'none';
+            document.getElementById('resultsScreen').style.display = 'none';
+            document.getElementById('mainScreen').style.display = 'block';
+        }
+
+        // Email functionality
+        function initEmailJS() {
+            // Email system ready
+        }
+
+        function sendResultsEmail() {
+            // Email functionality is disabled now because records are saved automatically on submit
+            console.warn('sendResultsEmail() no longer used. Records auto-save on submit.');
+        }
+
+        function sendEmailAfterSave() {
+            // Email functionality disabled
+            console.warn('sendEmailAfterSave() is disabled.');
+        }
+
+        function showEmailStatus(message, isSuccess) {
+            const emailStatus = document.getElementById('emailStatus');
+            emailStatus.innerHTML = message; // Use innerHTML to allow HTML content
+            emailStatus.style.display = 'block';
+            
+            if (isSuccess === true) {
+                emailStatus.style.background = '#d4edda';
+                emailStatus.style.color = '#155724';
+                emailStatus.style.borderLeft = '4px solid #28a745';
+            } else if (isSuccess === false) {
+                emailStatus.style.background = '#f8d7da';
+                emailStatus.style.color = '#721c24';
+                emailStatus.style.borderLeft = '4px solid #dc3545';
+            } else {
+                emailStatus.style.background = '#cfe2ff';
+                emailStatus.style.color = '#084298';
+                emailStatus.style.borderLeft = '4px solid #667eea';
+            }
+        }
+
+        function verifyHistoryPassword() {
+            const password = prompt('Enter history password to view saved test results:');
+            if (password === null) {
+                return false;
+            }
+            if (password.trim() !== HISTORY_PASSWORD) {
+                alert('Incorrect password. Access denied.');
+                return false;
+            }
+            return true;
+        }
+
+        function clearHistory() {
+            const confirmed = confirm('This clears the test history saved on THIS device only.\n\nThe shared Google Sheet (the master record from all phones) is NOT affected — to remove rows there, edit the Google Sheet directly.\n\nContinue?');
+            if (!confirmed) return;
+
+            try {
+                localStorage.removeItem(LOCALSTORAGE_KEY);
+                console.log('🧹 Test history cleared from LocalStorage.');
+            } catch (err) {
+                console.error('❌ Failed to clear LocalStorage history:', err);
+            }
+
+            if (db && dbReady) {
+                try {
+                    const transaction = db.transaction([STORE_NAME], 'readwrite');
+                    const store = transaction.objectStore(STORE_NAME);
+                    store.clear();
+                    transaction.oncomplete = () => {
+                        console.log('🧹 IndexedDB history cleared.');
+                    };
+                } catch (err) {
+                    console.error('❌ Failed to clear IndexedDB history:', err);
+                }
+            }
+
+            showTestHistory();
+        }
+
+        function showTestHistory() {
+            if (!verifyHistoryPassword()) {
+                return;
+            }
+            console.log('📋 Showing test history...');
+
+            fetchAllResultsFromSheet()
+                .then(results => renderHistory(results, true))
+                .catch(err => {
+                    console.warn('⚠️ Falling back to this device\'s local history:', err);
+                    getAllResults().then(results => renderHistory(results, false));
+                });
+        }
+
+        function renderHistory(results, fromSheet) {
+            const historyContent = document.getElementById('historyContent');
+            if (results.length === 0) {
+                historyContent.innerHTML = '<p style="color: #999; text-align: center; padding: 30px;">No test results yet. Start a test and submit your answers to see your history here.</p>';
+            } else {
+                const sourceNote = fromSheet
+                    ? '<p style="color:#28a745; text-align:center; margin-bottom:10px;">🌐 Showing combined results from ALL devices (Google Sheet)</p>'
+                    : '<p style="color:#dc3545; text-align:center; margin-bottom:10px;">⚠️ Google Sheet unavailable — showing results saved on THIS device only</p>';
+                let html = sourceNote + '<table style="width: 100%; border-collapse: collapse;"><tr style="background: #FFC107; color: #2b2b2b;"><th style="padding: 10px; text-align: center; border: 1px solid #ddd;">S/N</th><th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Student Name</th><th style="padding: 10px; text-align: center; border: 1px solid #ddd;">Score</th><th style="padding: 10px; text-align: center; border: 1px solid #ddd;">Result</th><th style="padding: 10px; text-align: center; border: 1px solid #ddd;">Correct</th><th style="padding: 10px; text-align: center; border: 1px solid #ddd;">Incorrect</th><th style="padding: 10px; text-align: center; border: 1px solid #ddd;">Unanswered</th><th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Date & Time</th></tr>';
+                results.forEach((result, idx) => {
+                    const bgColor = idx % 2 === 0 ? '#f9f9f9' : 'white';
+                    const passLabel = result.result || (result.score >= PASS_MARK ? 'Pass' : 'Fail');
+                    const passColor = passLabel === 'Pass' ? '#28a745' : '#dc3545';
+                    html += `<tr style="background: ${bgColor};"><td style="padding: 10px; text-align: center; border: 1px solid #ddd; font-weight: 700;">${idx + 1}</td><td style="padding: 10px; border: 1px solid #ddd;">${result.studentName}</td><td style="padding: 10px; text-align: center; border: 1px solid #ddd; font-weight: bold; color: #FFB300;">${result.score}%</td><td style="padding: 10px; text-align: center; border: 1px solid #ddd; font-weight: bold; color: ${passColor};">${passLabel}</td><td style="padding: 10px; text-align: center; border: 1px solid #ddd; color: #28a745;">${result.correct}</td><td style="padding: 10px; text-align: center; border: 1px solid #ddd; color: #dc3545;">${result.incorrect}</td><td style="padding: 10px; text-align: center; border: 1px solid #ddd; color: #ffc107;">${result.unanswered}</td><td style="padding: 10px; border: 1px solid #ddd; font-size: 0.9em;">${result.timestamp}</td></tr>`;
+                });
+                html += '</table>';
+                html += `<p style="color: #666; margin-top: 15px; text-align: center;">Total tests recorded: <strong>${results.length}</strong></p>`;
+                historyContent.innerHTML = html;
+            }
+            document.getElementById('mainScreen').style.display = 'none';
+            document.getElementById('testScreen').style.display = 'none';
+            document.getElementById('resultsScreen').style.display = 'none';
+            document.getElementById('historyScreen').style.display = 'block';
+        }
+
+        function backToHome() {
+            document.getElementById('mainScreen').style.display = 'block';
+            document.getElementById('testScreen').style.display = 'none';
+            document.getElementById('resultsScreen').style.display = 'none';
+            document.getElementById('historyScreen').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
+
