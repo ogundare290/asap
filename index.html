@@ -821,7 +821,7 @@
         }
 
         function saveResultToSheet(resultData) {
-            if (!SHEET_API_URL || SHEET_API_URL.includes('PASTE_YOUR')) {
+            if (!SHEET_API_URL || SHEET_API_URL.includes('https://script.google.com/macros/s/AKfycbyLm_VbF8InqJF0-JXrD3KheE5yM_8uylJ057X4BfY7P3jxsqYm9Cm5TcxAMCNm_iuZZA/exec')) {
                 console.warn('⚠️ Google Sheet not configured yet — set SHEET_API_URL to enable shared storage across devices.');
                 return;
             }
@@ -856,7 +856,7 @@
         }
 
         function fetchAllResultsFromSheet() {
-            if (!SHEET_API_URL || SHEET_API_URL.includes('PASTE_YOUR')) {
+            if (!SHEET_API_URL || SHEET_API_URL.includes('https://script.google.com/macros/s/AKfycbyLm_VbF8InqJF0-JXrD3KheE5yM_8uylJ057X4BfY7P3jxsqYm9Cm5TcxAMCNm_iuZZA/exec')) {
                 return Promise.reject('Google Sheet not configured yet');
             }
             return fetch(`${SHEET_API_URL}?key=${encodeURIComponent(SHEET_API_KEY)}`)
