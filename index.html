@@ -935,11 +935,10 @@ function getAllResults() {
             document.getElementById('questionNumberDisplay').textContent = `Question ${currentQuestionIndex + 1} of ${total}`;
             document.getElementById('questionTitle').textContent = question.question;
 
-            const optionsHtml = question.shuffledOptions.map(opt => `
+          const optionsHtml = question.shuffledOptions.map(opt => `
                 <label class="answer-option">
                     <input type="radio" name="answer" value="${opt.key}" 
                            ${answers[currentQuestionIndex] === opt.key ? 'checked' : ''}>
-                    <span class="answer-label">${opt.key}</span>
                     <span class="answer-text">${opt.text}</span>
                 </label>
             `).join('');
