@@ -5,558 +5,101 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MTN ASAP Competition - Professional Assessment Platform</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 40px 30px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-
-        .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
-
-        /* Main Screen */
-        #mainScreen {
-            padding: 30px;
-        }
-
-        .welcome-section {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .welcome-section h2 {
-            color: #222;
-            font-size: 1.8em;
-            margin-bottom: 15px;
-        }
-
-        .welcome-section p {
-            color: #666;
-            font-size: 1.05em;
-            margin-bottom: 10px;
-        }
-
-        .test-options {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .test-card {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            border: 2px solid #ddd;
-            border-radius: 12px;
-            padding: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-
-        .test-card:hover {
-            border-color: #667eea;
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.25);
-            transform: translateY(-5px);
-        }
-
-        .test-card h3 {
-            color: #667eea;
-            font-size: 1.4em;
-            margin-bottom: 10px;
-        }
-
-        .test-card p {
-            color: #666;
-            margin-bottom: 5px;
-        }
-
-        .test-card .stats {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 2px solid #ddd;
-        }
-
-        .test-card .stat {
-            text-align: center;
-        }
-
-        .test-card .stat-value {
-            font-size: 1.5em;
-            font-weight: 700;
-            color: #667eea;
-        }
-
-        .test-card .stat-label {
-            font-size: 0.85em;
-            color: #999;
-        }
-
-        .test-card button {
-            width: 100%;
-            margin-top: 15px;
-            padding: 12px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .test-card button:hover {
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        /* Test Screen */
-        #testScreen {
-            display: none;
-            padding: 0;
-        }
-
-        .test-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .test-title {
-            font-size: 1.3em;
-            font-weight: 600;
-        }
-
-        .timer-box {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 8px 15px;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 1.1em;
-        }
-
-        .timer-box.warning {
-            background: rgba(255, 193, 7, 0.5);
-        }
-
-        .timer-box.critical {
-            background: rgba(244, 67, 54, 0.5);
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background: #e9ecef;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            transition: width 0.3s ease;
-        }
-
-        .test-content {
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            min-height: 600px;
-        }
-
-        .question-container {
-            flex: 1;
-        }
-
-        .question-number-display {
-            color: #999;
-            font-size: 0.9em;
-            margin-bottom: 10px;
-        }
-
-        .question-title {
-            font-size: 1.3em;
-            font-weight: 600;
-            color: #222;
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-
-        .answer-options {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .answer-option {
-            padding: 15px;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: white;
-        }
-
-        .answer-option:hover {
-            border-color: #667eea;
-            background: #f0f4ff;
-        }
-
-        .answer-option input[type="radio"] {
-            cursor: pointer;
-            width: 20px;
-            height: 20px;
-        }
-
-        .answer-option.selected {
-            border-color: #667eea;
-            background: #e7f0ff;
-            font-weight: 600;
-        }
-
-        .answer-option.answered {
-            border-color: #28a745;
-            background: #d4edda;
-        }
-
-        .answer-option.answered.incorrect {
-            border-color: #dc3545;
-            background: #f8d7da;
-        }
-
-        .answer-label {
-            font-weight: 700;
-            color: #667eea;
-            min-width: 30px;
-        }
-
-        .answer-text {
-            flex: 1;
-            color: #333;
-        }
-
-        .test-navigation {
-            display: flex;
-            gap: 10px;
-            margin-top: 30px;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
-
-        .nav-button {
-            padding: 12px 25px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            background: white;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            color: #667eea;
-            border-color: #667eea;
-        }
-
-        .nav-button:hover:not(:disabled) {
-            background: #667eea;
-            color: white;
-        }
-
-        .nav-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .nav-button.submit {
-            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-            color: white;
-            border: none;
-        }
-
-        .nav-button.submit:hover {
-            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
-        }
-
-        .question-palette {
-            margin-top: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            justify-content: center;
-        }
-
-        .question-pill {
-            width: 34px;
-            height: 34px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            background: #f8f9fa;
-            color: #333;
-            cursor: pointer;
-            font-weight: 700;
-            transition: all 0.2s ease;
-        }
-
-        .question-pill:hover {
-            transform: translateY(-1px);
-            border-color: #667eea;
-            background: #eef2ff;
-        }
-
-        .question-pill.current {
-            border-color: #667eea;
-            background: #667eea;
-            color: white;
-        }
-
-        .question-pill.answered {
-            border-color: #28a745;
-            background: #28a745;
-            color: white;
-        }
-
-        .question-pill.unanswered {
-            border-color: #ffc107;
-            background: #fff3cd;
-            color: #856404;
-        }
-
-        .question-stats {
-            display: flex;
-            gap: 15px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .stat {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .stat-number {
-            font-weight: 700;
-            color: #667eea;
-            font-size: 1.2em;
-        }
-
-        /* Results Screen */
-        #resultsScreen {
-            display: none;
-            padding: 30px;
-        }
-
-        .results-container {
-            text-align: center;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .score-circle {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin: 30px auto;
-            color: white;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-        }
-
-        .score-percent {
-            font-size: 3em;
-            font-weight: 700;
-        }
-
-        .score-label {
-            font-size: 0.9em;
-            opacity: 0.9;
-        }
-
-        .results-details {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin: 30px 0;
-        }
-
-        .result-card {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            border-left: 4px solid #667eea;
-        }
-
-        .result-card.correct {
-            border-left-color: #28a745;
-        }
-
-        .result-card.incorrect {
-            border-left-color: #dc3545;
-        }
-
-        .result-card.unanswered {
-            border-left-color: #ffc107;
-        }
-
-        .result-value {
-            font-size: 2em;
-            font-weight: 700;
-            color: #667eea;
-            margin-bottom: 5px;
-        }
-
-        .result-card.correct .result-value {
-            color: #28a745;
-        }
-
-        .result-card.incorrect .result-value {
-            color: #dc3545;
-        }
-
-        .result-card.unanswered .result-value {
-            color: #ffc107;
-        }
-
-        .result-label {
-            color: #666;
-            font-weight: 600;
-        }
-
-        .performance-message {
-            font-size: 1.3em;
-            font-weight: 600;
-            margin: 20px 0;
-            color: #667eea;
-        }
-
-        .performance-message.excellent {
-            color: #28a745;
-        }
-
-        .performance-message.good {
-            color: #ffc107;
-        }
-
-        .performance-message.needs-improvement {
-            color: #dc3545;
-        }
-
-        .results-actions {
-            display: flex;
-            gap: 15px;
-            margin-top: 30px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .results-actions button {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .results-actions .retry-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .results-actions .retry-btn:hover {
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .results-actions .home-btn {
-            background: #f8f9fa;
-            color: #667eea;
-            border: 2px solid #667eea;
-        }
-
-        .results-actions .home-btn:hover {
-            background: #667eea;
-            color: white;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; border-radius: 15px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px 30px; text-align: center; }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; font-weight: 700; }
+        .header p { font-size: 1.1em; opacity: 0.9; }
+        #mainScreen { padding: 30px; }
+        .welcome-section { text-align: center; margin-bottom: 40px; }
+        .welcome-section h2 { color: #222; font-size: 1.8em; margin-bottom: 15px; }
+        .welcome-section p { color: #666; font-size: 1.05em; margin-bottom: 10px; }
+        .test-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 30px; }
+        .test-card { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); border: 2px solid #ddd; border-radius: 12px; padding: 25px; cursor: pointer; transition: all 0.3s ease; text-align: center; }
+        .test-card:hover { border-color: #667eea; box-shadow: 0 8px 25px rgba(102,126,234,0.25); transform: translateY(-5px); }
+        .test-card h3 { color: #667eea; font-size: 1.4em; margin-bottom: 10px; }
+        .test-card p { color: #666; margin-bottom: 5px; }
+        .test-card .stats { display: flex; justify-content: space-around; margin-top: 15px; padding-top: 15px; border-top: 2px solid #ddd; }
+        .test-card .stat { text-align: center; }
+        .test-card .stat-value { font-size: 1.5em; font-weight: 700; color: #667eea; }
+        .test-card .stat-label { font-size: 0.85em; color: #999; }
+        .test-card button { width: 100%; margin-top: 15px; padding: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
+        .test-card button:hover { box-shadow: 0 5px 15px rgba(102,126,234,0.4); }
+        #testScreen { display: none; padding: 0; }
+        .test-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .test-title { font-size: 1.3em; font-weight: 600; }
+        .timer-box { background: rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 8px; font-weight: 700; font-size: 1.1em; }
+        .timer-box.warning { background: rgba(255,193,7,0.5); }
+        .timer-box.critical { background: rgba(244,67,54,0.5); }
+        .progress-bar { width: 100%; height: 6px; background: #e9ecef; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); transition: width 0.3s ease; }
+        .test-content { padding: 30px; display: flex; flex-direction: column; min-height: 600px; }
+        .question-container { flex: 1; }
+        .question-number-display { color: #999; font-size: 0.9em; margin-bottom: 10px; }
+        .question-title { font-size: 1.3em; font-weight: 600; color: #222; margin-bottom: 20px; line-height: 1.6; }
+        .answer-options { display: flex; flex-direction: column; gap: 12px; }
+        .answer-option { padding: 15px; border: 2px solid #e9ecef; border-radius: 10px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 12px; background: white; }
+        .answer-option:hover { border-color: #667eea; background: #f0f4ff; }
+        .answer-option input[type="radio"] { cursor: pointer; width: 20px; height: 20px; }
+        .answer-option.selected { border-color: #667eea; background: #e7f0ff; font-weight: 600; }
+        .answer-label { font-weight: 700; color: #667eea; min-width: 30px; }
+        .answer-text { flex: 1; color: #333; }
+        .test-navigation { display: flex; gap: 10px; margin-top: 30px; justify-content: space-between; flex-wrap: wrap; }
+        .nav-button { padding: 12px 25px; border: 2px solid #667eea; border-radius: 8px; background: white; cursor: pointer; font-weight: 600; transition: all 0.3s ease; color: #667eea; }
+        .nav-button:hover:not(:disabled) { background: #667eea; color: white; }
+        .nav-button:disabled { opacity: 0.5; cursor: not-allowed; }
+        .nav-button.submit { background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; border: none; }
+        .nav-button.submit:hover { box-shadow: 0 5px 15px rgba(40,167,69,0.4); }
+        .question-palette { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+        .question-pill { width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; border: 1px solid #ddd; background: #f8f9fa; color: #333; cursor: pointer; font-weight: 700; transition: all 0.2s ease; }
+        .question-pill:hover { transform: translateY(-1px); border-color: #667eea; background: #eef2ff; }
+        .question-pill.current { border-color: #667eea; background: #667eea; color: white; }
+        .question-pill.answered { border-color: #28a745; background: #28a745; color: white; }
+        .question-pill.unanswered { border-color: #ffc107; background: #fff3cd; color: #856404; }
+        .question-stats { display: flex; gap: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        .stat { display: flex; gap: 8px; align-items: center; }
+        .stat-number { font-weight: 700; color: #667eea; font-size: 1.2em; }
+        #resultsScreen { display: none; padding: 30px; }
+        .results-container { text-align: center; max-width: 600px; margin: 0 auto; }
+        .score-circle { width: 200px; height: 200px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 30px auto; color: white; box-shadow: 0 10px 30px rgba(102,126,234,0.3); }
+        .score-percent { font-size: 3em; font-weight: 700; }
+        .score-label { font-size: 0.9em; opacity: 0.9; }
+        .results-details { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 30px 0; }
+        .result-card { background: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 4px solid #667eea; }
+        .result-card.correct { border-left-color: #28a745; }
+        .result-card.incorrect { border-left-color: #dc3545; }
+        .result-card.unanswered { border-left-color: #ffc107; }
+        .result-value { font-size: 2em; font-weight: 700; color: #667eea; margin-bottom: 5px; }
+        .result-card.correct .result-value { color: #28a745; }
+        .result-card.incorrect .result-value { color: #dc3545; }
+        .result-card.unanswered .result-value { color: #ffc107; }
+        .result-label { color: #666; font-weight: 600; }
+        .performance-message { font-size: 1.3em; font-weight: 600; margin: 20px 0; color: #667eea; }
+        .performance-message.excellent { color: #28a745; }
+        .performance-message.good { color: #ffc107; }
+        .performance-message.needs-improvement { color: #dc3545; }
+        .results-actions { display: flex; gap: 15px; margin-top: 30px; justify-content: center; flex-wrap: wrap; }
+        .results-actions button { padding: 12px 25px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
+        .results-actions .retry-btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .results-actions .retry-btn:hover { box-shadow: 0 5px 15px rgba(102,126,234,0.4); }
+        .results-actions .home-btn { background: #f8f9fa; color: #667eea; border: 2px solid #667eea; }
+        .results-actions .home-btn:hover { background: #667eea; color: white; }
         @media (max-width: 768px) {
-            .test-header {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .results-details {
-                grid-template-columns: 1fr;
-            }
-
-            .score-circle {
-                width: 150px;
-                height: 150px;
-            }
-
-            .score-percent {
-                font-size: 2em;
-            }
-
-            .test-options {
-                grid-template-columns: 1fr;
-            }
+            .test-header { flex-direction: column; text-align: center; }
+            .results-details { grid-template-columns: 1fr; }
+            .score-circle { width: 150px; height: 150px; }
+            .score-percent { font-size: 2em; }
+            .test-options { grid-template-columns: 1fr; }
         }
-
-        /* Yellow theme overrides */
+        /* Yellow theme */
         .header { background: linear-gradient(135deg, #FFD54A 0%, #FFC107 100%) !important; color: #2b2b2b !important; }
         .test-card { background: linear-gradient(135deg, #fff9e6 0%, #fff3cf 100%) !important; border-color: #f0e1a0 !important; }
         .test-card:hover { border-color: #FFB300 !important; box-shadow: 0 8px 25px rgba(255,183,77,0.25) !important; }
         .test-card h3 { color: #FFB300 !important; }
         .test-card button { background: linear-gradient(135deg, #FFD54A 0%, #FFC107 100%) !important; color: #2b2b2b !important; }
-        .test-card button:hover { box-shadow: 0 5px 15px rgba(255,183,77,0.25) !important; }
         .stat-value { color: #FFB300 !important; }
         .score-circle { background: linear-gradient(135deg, #FFD54A 0%, #FFC107 100%) !important; color: #2b2b2b !important; box-shadow: 0 10px 30px rgba(255,183,77,0.3) !important; }
-        .result-card { border-left-color: #FFB300 !important; }
         .result-value { color: #FFB300 !important; }
         .performance-message { color: #FFB300 !important; }
         .results-actions .retry-btn { background: linear-gradient(135deg, #FFD54A 0%, #FFC107 100%) !important; color: #2b2b2b !important; }
@@ -564,371 +107,272 @@
         .progress-fill { background: linear-gradient(90deg, #FFD54A, #FFC107) !important; }
         .timer-box.warning { background: #FFD54A !important; color: #2b2b2b !important; }
         .timer-box.critical { background: #ff6b6b !important; color: white !important; }
-
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🏆 MTN ASAP Competition</h1>
-            <p>Drug Knowledge & Demand Reduction - Professional Assessment Platform</p>
+<div class="container">
+    <div class="header">
+        <h1>🏆 MTN ASAP Competition</h1>
+        <p>Drug Knowledge &amp; Demand Reduction - Professional Assessment Platform</p>
+    </div>
+
+    <!-- Main Screen -->
+    <div id="mainScreen">
+        <div class="welcome-section">
+            <h2>Welcome to the MTN ASAP Assessment Platform</h2>
+            <p>Prepare for the competition with our comprehensive question bank</p>
+            <p>Each test contains 100 randomly shuffled questions</p>
         </div>
-
-        <!-- Main Screen -->
-        <div id="mainScreen">
-            <div class="welcome-section">
-                <h2>Welcome to the MTN ASAP Assessment Platform</h2>
-                <p>Prepare for the competition with our comprehensive question bank</p>
-                <p>Each test contains 100 randomly shuffled questions</p>
-            </div>
-
-            <div style="background: linear-gradient(135deg, #fff9e6 0%, #fff3cf 100%); padding: 22px; border-radius: 14px; border: 2px solid #FFB300; margin-bottom: 30px;">
-                <label for="studentNameMain" style="display: block; font-weight: 700; margin-bottom: 10px; color: #2b2b2b;">📝 Student Name</label>
-                <input id="studentNameMain" type="text" placeholder="Enter full name before starting" style="width: 100%; padding: 14px; border: 2px solid #FFB300; border-radius: 10px; font-size: 1rem; color: #2b2b2b; background: white;" />
-                <div id="nameError" style="display: none; color: #dc3545; margin-top: 10px; font-weight: 600;"></div>
-            </div>
-
-            <div class="test-options">
-                <div class="test-card">
-                    <h3>🧪 Start Full Test</h3>
-                    <p>One 100-question test — freshly shuffled every time</p>
-                    <div class="stats">
-                        <div class="stat">
-                            <div class="stat-value">100</div>
-                            <div class="stat-label">Questions</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-value">30</div>
-                            <div class="stat-label">Min</div>
-                        </div>
-                    </div>
-                    <button onclick="startTest(100)">Start Test</button>
+        <div style="background:linear-gradient(135deg,#fff9e6 0%,#fff3cf 100%);padding:22px;border-radius:14px;border:2px solid #FFB300;margin-bottom:30px;">
+            <label for="studentNameMain" style="display:block;font-weight:700;margin-bottom:10px;color:#2b2b2b;">📝 Student Name</label>
+            <input id="studentNameMain" type="text" placeholder="Enter full name before starting" style="width:100%;padding:14px;border:2px solid #FFB300;border-radius:10px;font-size:1rem;color:#2b2b2b;background:white;" />
+            <div id="nameError" style="display:none;color:#dc3545;margin-top:10px;font-weight:600;"></div>
+        </div>
+        <div class="test-options">
+            <div class="test-card">
+                <h3>🧪 Start Full Test</h3>
+                <p>One 100-question test — freshly shuffled every time</p>
+                <div class="stats">
+                    <div class="stat"><div class="stat-value">100</div><div class="stat-label">Questions</div></div>
+                    <div class="stat"><div class="stat-value">30</div><div class="stat-label">Min</div></div>
                 </div>
-            </div>
-
-            <div style="text-align: center; margin-top: 30px;">
-                <button onclick="showTestHistory()" style="padding: 12px 30px; background: #FFC107; color: #2b2b2b; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1em;">📊 View Test History</button>
+                <button onclick="startTest(100)">Start Test</button>
             </div>
         </div>
-
-        <!-- Test History Screen -->
-        <div id="historyScreen" style="display: none; padding: 30px;">
-            <div style="max-width: 900px; margin: 0 auto;">
-                <h2 style="margin-bottom: 20px; color: #2b2b2b;">📋 Test Results History</h2>
-                <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
-                    <button onclick="clearHistory()" style="padding: 12px 30px; background: #dc3545; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">🧹 Clear History</button>
-                    <button onclick="backToHome()" style="padding: 12px 30px; background: #FFC107; color: #2b2b2b; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">← Back to Home</button>
-                </div>
-                <div id="historyContent" style="background: white; border-radius: 10px; padding: 20px;"></div>
-            </div>
-        </div>
-
-        <!-- Test Screen -->
-        <div id="testScreen">
-            <div class="test-header">
-                <div class="test-title" id="testTitle">Question 1 of 100</div>
-                <div class="timer-box" id="timerBox">30:00</div>
-            </div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-            <div class="test-content">
-                <div class="question-stats">
-                    <div class="stat">
-                        <span class="stat-label">Question:</span>
-                        <span class="stat-number" id="questionNumber">1</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-label">Answered:</span>
-                        <span class="stat-number" id="answeredCount">0</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-label">Remaining:</span>
-                        <span class="stat-number" id="remainingCount">100</span>
-                    </div>
-                </div>
-
-                <div class="question-container">
-                    <div class="question-number-display" id="questionNumberDisplay">Question 1 of 100</div>
-                    <div class="question-title" id="questionTitle"></div>
-                    <div class="answer-options" id="answerOptions"></div>
-                </div>
-
-                <div class="test-navigation">
-                    <button class="nav-button" id="prevBtn" onclick="previousQuestion()" disabled>← Previous</button>
-                    <button class="nav-button" id="nextBtn" onclick="nextQuestion()">Next →</button>
-                    <button class="nav-button submit" onclick="submitTest()">Submit Test</button>
-                </div>
-                <div class="question-palette" id="questionPalette"></div>
-            </div>
-        </div>
-
-        <!-- Results Screen -->
-        <div id="resultsScreen">
-            <div class="results-container">
-                <h2 style="font-size: 1.8em; margin-bottom: 20px;">Test Complete!</h2>
-                
-                <div class="score-circle" id="scoreCircle">
-                    <div class="score-percent" id="scorePercent">0%</div>
-                    <div class="score-label">Your Score</div>
-                </div>
-
-                <div class="performance-message" id="performanceMessage">Great effort!</div>
-
-                <div class="results-details">
-                    <div class="result-card correct">
-                        <div class="result-value" id="correctCount">0</div>
-                        <div class="result-label">Correct</div>
-                    </div>
-                    <div class="result-card incorrect">
-                        <div class="result-value" id="incorrectCount">0</div>
-                        <div class="result-label">Incorrect</div>
-                    </div>
-                    <div class="result-card unanswered">
-                        <div class="result-value" id="unansweredCount">0</div>
-                        <div class="result-label">Unanswered</div>
-                    </div>
-                </div>
-
-                <p style="color: #666; font-size: 1.05em; margin: 20px 0;">
-                    You answered <strong id="resultSummary">0 out of 0</strong> questions correctly.
-                </p>
-
-                <div id="emailStatus" style="display: none; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; font-weight: 600;"></div>
-
-                <div class="results-actions">
-                    <button class="retry-btn" onclick="backToHome()">← Back to Home</button>
-                    <button class="home-btn" onclick="showReviewAnswers()">Review Answers</button>
-                    <button class="home-btn" onclick="startTest(100)">Try Another Test</button>
-                </div>
-                <div id="reviewSection" style="display:none; margin-top: 25px; padding: 20px; border-radius: 12px; background: #f8f9fa; border: 1px solid #e2e3e5; max-height: 450px; overflow-y: auto;">
-                    <h3 style="margin-bottom: 15px; color: #333;">Answer Review</h3>
-                    <div id="reviewContent" style="font-size: 0.95em; line-height: 1.5;"></div>
-                </div>
-            </div>
+        <div style="text-align:center;margin-top:30px;">
+            <button onclick="showTestHistory()" style="padding:12px 30px;background:#FFC107;color:#2b2b2b;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:1em;">📊 View Test History</button>
         </div>
     </div>
 
-    <script>
-        // IndexedDB Setup for storing test results
-        let db = null;
-        let dbReady = false;
-        const DB_NAME = 'MTNAsapDB';
-        const DB_VERSION = 1;
-        const STORE_NAME = 'testResults';
-        const LOCALSTORAGE_KEY = 'MTN_ASAP_TEST_RESULTS';
-        const HISTORY_PASSWORD = 'josephjoseph12';
-        const TEST_DURATION_SECONDS = 1800; // 30 minutes
+    <!-- History Screen -->
+    <div id="historyScreen" style="display:none;padding:30px;">
+        <div style="max-width:900px;margin:0 auto;">
+            <h2 style="margin-bottom:20px;color:#2b2b2b;">📋 Test Results History</h2>
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px;flex-wrap:wrap;">
+                <button onclick="clearHistory()" style="padding:12px 30px;background:#dc3545;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🧹 Clear History</button>
+                <button onclick="backToHome()" style="padding:12px 30px;background:#FFC107;color:#2b2b2b;border:none;border-radius:8px;cursor:pointer;font-weight:600;">← Back to Home</button>
+            </div>
+            <div id="historyContent" style="background:white;border-radius:10px;padding:20px;"></div>
+        </div>
+    </div>
 
-        // ===== SHARED GOOGLE SHEET DATABASE (combines results from every phone/device) =====
-        // 1. Create a Google Sheet, open Extensions > Apps Script, paste the provided Code.gs
-        // 2. Deploy it as a Web App ("Anyone" access) and paste the resulting URL below
-        // 3. Make sure SHEET_API_KEY here matches SECRET_KEY in the Apps Script exactly
-        const SHEET_API_URL = 'https://script.google.com/macros/s/AKfycbyLm_VbF8InqJF0-JXrD3KheE5yM_8uylJ057X4BfY7P3jxsqYm9Cm5TcxAMCNm_iuZZA/exec';
-        const SHEET_API_KEY = 'mtn-asap-2026-change-me';
-        const PASS_MARK = 50; // % score needed to be marked "Pass"
+    <!-- Test Screen -->
+    <div id="testScreen">
+        <div class="test-header">
+            <div class="test-title" id="testTitle">Question 1 of 100</div>
+            <div class="timer-box" id="timerBox">30:00</div>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="test-content">
+            <div class="question-stats">
+                <div class="stat"><span class="stat-label">Question:</span><span class="stat-number" id="questionNumber">1</span></div>
+                <div class="stat"><span class="stat-label">Answered:</span><span class="stat-number" id="answeredCount">0</span></div>
+                <div class="stat"><span class="stat-label">Remaining:</span><span class="stat-number" id="remainingCount">100</span></div>
+            </div>
+            <div class="question-container">
+                <div class="question-number-display" id="questionNumberDisplay">Question 1 of 100</div>
+                <div class="question-title" id="questionTitle"></div>
+                <div class="answer-options" id="answerOptions"></div>
+            </div>
+            <div class="test-navigation">
+                <button class="nav-button" id="prevBtn" onclick="previousQuestion()" disabled>← Previous</button>
+                <button class="nav-button" id="nextBtn" onclick="nextQuestion()">Next →</button>
+                <button class="nav-button submit" onclick="submitTest()">Submit Test</button>
+            </div>
+            <div class="question-palette" id="questionPalette"></div>
+        </div>
+    </div>
 
-        function initDB() {
-            return new Promise((resolve, reject) => {
-                if (dbReady && db) {
-                    resolve(db);
-                    return;
+    <!-- Results Screen -->
+    <div id="resultsScreen">
+        <div class="results-container">
+            <h2 style="font-size:1.8em;margin-bottom:20px;">Test Complete!</h2>
+            <div class="score-circle">
+                <div class="score-percent" id="scorePercent">0%</div>
+                <div class="score-label">Your Score</div>
+            </div>
+            <div class="performance-message" id="performanceMessage">Great effort!</div>
+            <div class="results-details">
+                <div class="result-card correct"><div class="result-value" id="correctCount">0</div><div class="result-label">Correct</div></div>
+                <div class="result-card incorrect"><div class="result-value" id="incorrectCount">0</div><div class="result-label">Incorrect</div></div>
+                <div class="result-card unanswered"><div class="result-value" id="unansweredCount">0</div><div class="result-label">Unanswered</div></div>
+            </div>
+            <p style="color:#666;font-size:1.05em;margin:20px 0;">You answered <strong id="resultSummary">0 out of 0</strong> questions correctly.</p>
+            <!-- Sync status banner -->
+            <div id="syncStatus" style="display:none;padding:15px;border-radius:8px;margin:15px 0;text-align:center;font-weight:600;"></div>
+            <div class="results-actions">
+                <button class="retry-btn" onclick="backToHome()">← Back to Home</button>
+                <button class="home-btn" onclick="showReviewAnswers()">Review Answers</button>
+                <button class="home-btn" onclick="startTest(100)">Try Another Test</button>
+            </div>
+            <div id="reviewSection" style="display:none;margin-top:25px;padding:20px;border-radius:12px;background:#f8f9fa;border:1px solid #e2e3e5;max-height:450px;overflow-y:auto;">
+                <h3 style="margin-bottom:15px;color:#333;">Answer Review</h3>
+                <div id="reviewContent" style="font-size:0.95em;line-height:1.5;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// ======================================================
+// CONFIGURATION  — edit to match your deployment
+// ======================================================
+const SHEET_API_URL = 'https://script.google.com/macros/s/AKfycbyLm_VbF8InqJF0-JXrD3KheE5yM_8uylJ057X4BfY7P3jxsqYm9Cm5TcxAMCNm_iuZZA/exec';
+const SHEET_API_KEY = 'mtn-asap-2026-change-me';
+// ======================================================
+
+const DB_NAME               = 'MTNAsapDB';
+const DB_VERSION            = 1;
+const STORE_NAME            = 'testResults';
+const LOCALSTORAGE_KEY      = 'MTN_ASAP_TEST_RESULTS';
+const HISTORY_PASSWORD      = 'josephjoseph12';
+const TEST_DURATION_SECONDS = 1800;
+const PASS_MARK             = 50;
+
+let db      = null;
+let dbReady = false;
+
+// ---------- IndexedDB ----------
+function initDB() {
+    return new Promise((resolve, reject) => {
+        if (dbReady && db) { resolve(db); return; }
+        try {
+            const req = indexedDB.open(DB_NAME, DB_VERSION);
+            req.onerror   = () => reject('IndexedDB init failed');
+            req.onsuccess = () => { db = req.result; dbReady = true; resolve(db); };
+            req.onupgradeneeded = e => {
+                const d = e.target.result;
+                if (!d.objectStoreNames.contains(STORE_NAME)) {
+                    const s = d.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
+                    s.createIndex('studentName', 'studentName', { unique: false });
+                    s.createIndex('timestamp',   'timestamp',   { unique: false });
                 }
-
-                try {
-                    const request = indexedDB.open(DB_NAME, DB_VERSION);
-                    
-                    request.onerror = () => {
-                        console.error('IndexedDB error:', request.error);
-                        reject('IndexedDB initialization failed');
-                    };
-                    
-                    request.onsuccess = () => {
-                        db = request.result;
-                        dbReady = true;
-                        console.log('✅ IndexedDB initialized successfully');
-                        resolve(db);
-                    };
-                    
-                    request.onupgradeneeded = (e) => {
-                        console.log('Creating IndexedDB schema...');
-                        const database = e.target.result;
-                        if (!database.objectStoreNames.contains(STORE_NAME)) {
-                            const store = database.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
-                            store.createIndex('studentName', 'studentName', { unique: false });
-                            store.createIndex('timestamp', 'timestamp', { unique: false });
-                            console.log('✅ Object store created');
-                        }
-                    };
-                } catch (err) {
-                    console.error('IndexedDB init error:', err);
-                    reject(err);
-                }
-            });
-        }
-
-        function saveResultToDB(studentName, percentage, correct, incorrect, unanswered, total) {
-            console.log('🔍 saveResultToDB called with:', { studentName, percentage, correct, incorrect, unanswered, total });
-            
-            const resultData = {
-                studentName: studentName,
-                score: percentage,
-                correct: parseInt(correct),
-                incorrect: parseInt(incorrect),
-                unanswered: parseInt(unanswered),
-                total: total,
-                timestamp: new Date().toLocaleString(),
-                date: new Date().getTime()
             };
+        } catch (err) { reject(err); }
+    });
+}
+initDB().catch(err => console.warn('IndexedDB unavailable:', err));
 
-            // Send to the shared Google Sheet so every phone's result lands in ONE place
-            saveResultToSheet(resultData);
+// ---------- Sync status banner ----------
+function showSyncStatus(message, isSuccess) {
+    const el = document.getElementById('syncStatus');
+    if (!el) return;
+    el.innerHTML      = message;
+    el.style.display  = 'block';
+    if (isSuccess === true) {
+        el.style.background = '#d4edda'; el.style.color = '#155724'; el.style.borderLeft = '4px solid #28a745';
+    } else if (isSuccess === false) {
+        el.style.background = '#fff3cd'; el.style.color = '#856404'; el.style.borderLeft = '4px solid #ffc107';
+    } else {
+        el.style.background = '#cfe2ff'; el.style.color = '#084298'; el.style.borderLeft = '4px solid #667eea';
+    }
+}
 
-            // ALSO save to LocalStorage as an offline-friendly local backup
-            try {
-                let results = JSON.parse(localStorage.getItem(LOCALSTORAGE_KEY) || '[]');
-                console.log('📦 Current LocalStorage results:', results.length);
-                results.push(resultData);
-                localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(results));
-                console.log('✅ SUCCESSFULLY saved to LocalStorage. Total records:', results.length);
-            } catch (err) {
-                console.error('❌ LocalStorage save error:', err);
-            }
-
-            // ALSO try IndexedDB if ready
-            if (db && dbReady) {
-                try {
-                    const transaction = db.transaction([STORE_NAME], 'readwrite');
-                    const store = transaction.objectStore(STORE_NAME);
-                    const request = store.add(resultData);
-                    
-                    request.onerror = () => {
-                        console.error('❌ IndexedDB add error:', request.error);
-                    };
-                    
-                    request.onsuccess = () => {
-                        console.log('✅ Also saved to IndexedDB');
-                    };
-                } catch (err) {
-                    console.error('❌ IndexedDB transaction error:', err);
-                }
+// ---------- Google Sheet sync  *** THE FIX IS HERE *** ----------
+function saveResultToSheet(resultData) {
+    // FIXED: was incorrectly using .includes() which always matched the real URL
+    // Now we only skip if the URL is genuinely empty
+    if (!SHEET_API_URL || SHEET_API_URL.trim() === '') {
+        console.warn('Google Sheet URL not set.');
+        return;
+    }
+    showSyncStatus('⏳ Syncing to shared leaderboard…', null);
+    const payload = {
+        key:         SHEET_API_KEY,
+        studentName: resultData.studentName,
+        score:       resultData.score,
+        correct:     resultData.correct,
+        incorrect:   resultData.incorrect,
+        unanswered:  resultData.unanswered,
+        total:       resultData.total,
+        passed:      resultData.score >= PASS_MARK,
+        device:      navigator.userAgent
+    };
+    fetch(SHEET_API_URL, { method: 'POST', body: JSON.stringify(payload) })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                console.log('✅ Synced to Google Sheet');
+                showSyncStatus('✅ Result saved to shared leaderboard!', true);
             } else {
-                console.warn('⚠️ IndexedDB not ready (will use LocalStorage only)');
+                console.error('Sheet error:', data.error);
+                showSyncStatus('⚠️ Sheet error: ' + data.error, false);
             }
-
-            // Return success immediately since we saved to LocalStorage
-            return Promise.resolve(resultData);
-        }
-
-        function saveResultToSheet(resultData) {
-            if (!SHEET_API_URL || SHEET_API_URL.includes('https://script.google.com/macros/s/AKfycbyLm_VbF8InqJF0-JXrD3KheE5yM_8uylJ057X4BfY7P3jxsqYm9Cm5TcxAMCNm_iuZZA/exec')) {
-                console.warn('⚠️ Google Sheet not configured yet — set SHEET_API_URL to enable shared storage across devices.');
-                return;
-            }
-
-            const payload = {
-                key: SHEET_API_KEY,
-                studentName: resultData.studentName,
-                score: resultData.score,
-                correct: resultData.correct,
-                incorrect: resultData.incorrect,
-                unanswered: resultData.unanswered,
-                total: resultData.total,
-                passed: resultData.score >= PASS_MARK,
-                device: navigator.userAgent
-            };
-
-            fetch(SHEET_API_URL, {
-                method: 'POST',
-                body: JSON.stringify(payload)
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        console.log('✅ Synced to shared Google Sheet (visible from any device)');
-                    } else {
-                        console.error('❌ Google Sheet rejected the record:', data.error);
-                    }
-                })
-                .catch(err => {
-                    console.error('❌ Could not reach Google Sheet (device may be offline):', err);
-                });
-        }
-
-        function fetchAllResultsFromSheet() {
-            if (!SHEET_API_URL || SHEET_API_URL.includes('https://script.google.com/macros/s/AKfycbyLm_VbF8InqJF0-JXrD3KheE5yM_8uylJ057X4BfY7P3jxsqYm9Cm5TcxAMCNm_iuZZA/exec')) {
-                return Promise.reject('Google Sheet not configured yet');
-            }
-            return fetch(`${SHEET_API_URL}?key=${encodeURIComponent(SHEET_API_KEY)}`)
-                .then(res => res.json())
-                .then(data => {
-                    if (!data.success) throw new Error(data.error || 'Unknown error from Google Sheet');
-                    return data.results.map(r => ({
-                        studentName: r['Student Name'],
-                        score: r['Score (%)'],
-                        correct: r['Correct'],
-                        incorrect: r['Incorrect'],
-                        unanswered: r['Unanswered'],
-                        result: r['Result'],
-                        timestamp: r['Timestamp'] ? new Date(r['Timestamp']).toLocaleString() : '',
-                        date: r['Timestamp'] ? new Date(r['Timestamp']).getTime() : 0
-                    })).sort((a, b) => b.date - a.date);
-                });
-        }
-
-        function getAllResults() {
-            console.log('🔍 getAllResults called');
-            
-            return new Promise((resolve, reject) => {
-                // Try LocalStorage FIRST (most reliable)
-                try {
-                    const results = JSON.parse(localStorage.getItem(LOCALSTORAGE_KEY) || '[]');
-                    console.log('✅ Retrieved', results.length, 'results from LocalStorage');
-                    
-                    if (results.length > 0) {
-                        const sorted = results.sort((a, b) => b.date - a.date);
-                        console.log('📋 Sorted results:', sorted);
-                        resolve(sorted);
-                        return;
-                    }
-                } catch (err) {
-                    console.error('❌ LocalStorage read error:', err);
-                }
-
-                // If LocalStorage is empty, try IndexedDB
-                if (db && dbReady) {
-                    try {
-                        const transaction = db.transaction([STORE_NAME], 'readonly');
-                        const store = transaction.objectStore(STORE_NAME);
-                        const request = store.getAll();
-                        
-                        request.onerror = () => {
-                            console.error('❌ IndexedDB read error:', request.error);
-                            resolve([]);
-                        };
-                        
-                        request.onsuccess = () => {
-                            const results = request.result.sort((a, b) => b.date - a.date);
-                            console.log('✅ Retrieved', results.length, 'results from IndexedDB');
-                            resolve(results);
-                        };
-                    } catch (err) {
-                        console.error('❌ IndexedDB transaction error:', err);
-                        resolve([]);
-                    }
-                } else {
-                    console.log('IndexedDB not ready, returning empty (LocalStorage was also empty)');
-                    resolve([]);
-                }
-            });
-        }
-
-        // Initialize DB on page load - wait a bit to ensure it's ready
-        initDB().then(() => {
-            console.log('Database ready');
-        }).catch(err => {
-            console.log('Database init warning:', err, '(will use LocalStorage fallback)');
+        })
+        .catch(err => {
+            console.error('Could not reach Google Sheet:', err);
+            showSyncStatus('⚠️ Offline — result saved locally only.', false);
         });
+}
+
+function fetchAllResultsFromSheet() {
+    // FIXED: same fix — only skip if URL is genuinely empty
+    if (!SHEET_API_URL || SHEET_API_URL.trim() === '') {
+        return Promise.reject('Google Sheet URL not configured.');
+    }
+    return fetch(`${SHEET_API_URL}?key=${encodeURIComponent(SHEET_API_KEY)}`)
+        .then(r => r.json())
+        .then(data => {
+            if (!data.success) throw new Error(data.error || 'Unknown error');
+            return data.results.map(r => ({
+                studentName: r['Student Name'],
+                score:       r['Score (%)'],
+                correct:     r['Correct'],
+                incorrect:   r['Incorrect'],
+                unanswered:  r['Unanswered'],
+                result:      r['Result'],
+                timestamp:   r['Timestamp'] ? new Date(r['Timestamp']).toLocaleString() : '',
+                date:        r['Timestamp'] ? new Date(r['Timestamp']).getTime() : 0
+            })).sort((a, b) => b.date - a.date);
+        });
+}
+
+// ---------- Save result ----------
+function saveResultToDB(studentName, percentage, correct, incorrect, unanswered, total) {
+    const resultData = {
+        studentName,
+        score:     percentage,
+        correct:   parseInt(correct),
+        incorrect: parseInt(incorrect),
+        unanswered: parseInt(unanswered),
+        total,
+        timestamp: new Date().toLocaleString(),
+        date:      new Date().getTime()
+    };
+    // 1. Google Sheet
+    saveResultToSheet(resultData);
+    // 2. LocalStorage backup
+    try {
+        let arr = JSON.parse(localStorage.getItem(LOCALSTORAGE_KEY) || '[]');
+        arr.push(resultData);
+        localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(arr));
+        console.log('✅ Saved to LocalStorage');
+    } catch (e) { console.error('LocalStorage save error:', e); }
+    // 3. IndexedDB backup
+    if (db && dbReady) {
+        try { db.transaction([STORE_NAME], 'readwrite').objectStore(STORE_NAME).add(resultData); }
+        catch (e) { console.error('IndexedDB save error:', e); }
+    }
+    return Promise.resolve(resultData);
+}
+
+function getAllResults() {
+    return new Promise(resolve => {
+        try {
+            const arr = JSON.parse(localStorage.getItem(LOCALSTORAGE_KEY) || '[]');
+            if (arr.length > 0) { resolve(arr.sort((a, b) => b.date - a.date)); return; }
+        } catch (e) {}
+        if (db && dbReady) {
+            try {
+                const req = db.transaction([STORE_NAME], 'readonly').objectStore(STORE_NAME).getAll();
+                req.onsuccess = () => resolve(req.result.sort((a, b) => b.date - a.date));
+                req.onerror   = () => resolve([]);
+                return;
+            } catch (e) {}
+        }
+        resolve([]);
+    });
+}
 
         // Complete question database
         const allQuestions = [
